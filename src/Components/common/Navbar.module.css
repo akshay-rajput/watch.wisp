@@ -1,0 +1,40 @@
+.navbar{
+    background-color: var(--dark);
+}
+
+.navbar a{
+    color: var(--primary);
+    font-family: 'Signika', sans-serif;
+    font-size: 1.15rem;
+}
+.navbar a:hover{
+    color: var(--light);
+}
+
+.nav_brand{
+    font-size: 1.75rem !important;
+    color: white;
+}
+.nav_brand:hover{
+    text-decoration: none;
+}
+
+.navbar input::placeholder{
+    color: #ccc;
+}
+.navbar input:focus{
+    background-color: #222;
+}
+
+.nav_container{
+    position: relative;
+}
+
+/* tablet and up */
+@media (min-width: 768px) {
+    .navbar{
+        position: fixed;
+        z-index: 3;
+        width: 100%;
+    }
+}
