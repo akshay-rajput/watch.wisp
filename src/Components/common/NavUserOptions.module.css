@@ -1,0 +1,9 @@
+.user_options_bottom_drawer{
+    background: var(--dark);
+    color: var(--light);
+    padding: 0.5rem;
+    border-radius: 0 0 4px 4px;
+    position: absolute;
+    bottom: -2.25rem;
+    right: 0;
+}
