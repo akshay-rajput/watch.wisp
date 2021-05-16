@@ -1,0 +1,41 @@
+.login_form{
+    width: 90%;
+    max-width: 400px;
+    border-radius: 5px;
+    margin: auto;
+    background-color: white;
+}
+
+.login_heading{
+    font-size: 2rem;
+    color: var(--gray);
+    /* position: absolute; */
+    /* margin-top: -3.5rem; */
+    padding: 0.5rem 1rem;
+}
+
+.form_input{
+    font-size: 1rem;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid var(--secondary);
+    /* margin-bottom: 1rem; */
+}
+.form_input:focus{
+    outline-color: var(--secondary);
+}
+.form_input::placeholder{
+    color: #bbb;
+}
+
+
+.password_visibility_toggler{
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    /* height: 100%; */
+    /* bottom: 0; */
+    padding: 0.7rem 0.5rem;
+    background-color: white;
+}
