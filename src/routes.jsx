@@ -19,6 +19,7 @@ const ROUTES = [
     {
         path: "/",
         key: "Home",
+        end: true,
         exact: true,
         element: <Home />, 
     },
@@ -26,12 +27,12 @@ const ROUTES = [
         path: "/addvideo",
         key: "AddVideo",
         end: true,
+        exact: true,
         element: <AddVideo/>, 
     },
     {
         path: "/video/:videoId",
         key: "Video",
-        end: true,
         element: <Video/>, 
     },
     
@@ -39,48 +40,50 @@ const ROUTES = [
     {   path: '/playlists/likedVideos',
         key: "likedVideos",
         end: true,
+        exact: true,
         element: <LikedVideos />
     },
     {   path: '/playlists/savedVideos',
         key: "savedVideos",
         end: true,
+        exact: true,
         element: <SavedVideos />
     },
     {
         path: "/playlists",
         key: "Playlists",
         end: true,
+        exact: true,
         element: <Playlists/>,
     },
 
     {
         path: "/search",
         key: "Search",
-        end: true,
         element: <Search/>, 
     },
     {
         path: "/login",
         key: "Login",
         end: true,
+        exact: true,
         element: <Login/>, 
     },
     {
         path: "/signup",
         key: "Signup",
         end: true,
+        exact: true,
         element: <Signup/>, 
     },
     {
         path: "/profile",
         key: "Profile",
-        end: true,
         element: <Profile/>, 
     },
     {
         path: "*",
         key: "PageNotFound",
-        end: true,
         element: <PageNotFound/>, 
     },  
 ];
@@ -88,7 +91,7 @@ const ROUTES = [
 export function RenderRoutes({ routes }) {
     // useRoutes to render routes object - alternative to Routes & Route of react-router-dom
     let selectedRoute = useRoutes(routes);
-    console.log('select: ', selectedRoute);
+    // console.log('select: ', selectedRoute);
     return selectedRoute;
 }
 
