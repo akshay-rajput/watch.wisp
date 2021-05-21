@@ -30,11 +30,22 @@
     position: relative;
 }
 
+.nav_search_input{
+    width: 6rem;
+}
+
+.nav_username{
+    display: none;
+}
 /* tablet and up */
 @media (min-width: 768px) {
     .navbar{
         position: fixed;
         z-index: 3;
         width: 100%;
+    }
+
+    .nav_username{
+        display: inline;
     }
 }
