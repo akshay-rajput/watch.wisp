@@ -9,12 +9,16 @@
     flex-direction: row;
     justify-content: space-around; */
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     align-items: center;
     /* align-items: center; */
 }
 .nav_link{
     color: var(--gray);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .nav_link:hover{
     color: var(--light);
@@ -22,6 +26,9 @@
     background-color: var(--darkgray);
 }
 
+.nav_label{
+   font-size: 0.7rem;
+}
 @media (min-width: 768px) {
     .feature_navbar{
         width: 6rem;
@@ -40,5 +47,10 @@
         width: 100%;
         padding-top: 1rem;
         padding-bottom: 1rem;
+    }
+
+    .nav_label{
+        display: block;
+        font-size: 0.7rem;
     }
 }
