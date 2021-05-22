@@ -1,0 +1,36 @@
+.search_form{
+    margin:auto;
+    width: 100%;
+    max-width: 500px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.search_input{
+    color: var(--dark);
+}
+
+.loadingIcon{
+    animation: rotating 2s linear infinite;
+}
+
+.nodata{
+    width: 125px;
+}
+@keyframes rotating {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+/* media queries */
+@media (min-width: 768px) {
+    .nodata{
+        width: 250px;
+    }
+}
