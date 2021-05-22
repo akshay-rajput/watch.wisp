@@ -58,13 +58,13 @@
 /* tablet and pc */
 @media (min-width: 768px) {
     .result_card_image{
-        grid-column-start: span 4;
+        grid-column-start: span 5;
         max-width: 100%;
     }
     
     .result_card_info{
-        grid-column-start: span 8;
-        padding: 0 0.5rem;
+        grid-column-start: span 7;
+        padding: 0.5rem;
     }
 
 }
