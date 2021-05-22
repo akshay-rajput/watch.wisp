@@ -1,6 +1,5 @@
 import React from "react";
 import Home from "./Views/Home";
-import AddVideo from "./Views/AddVideo";
 import Video from "./Views/Video";
 
 import Playlists from "./Views/Playlists";
@@ -22,13 +21,6 @@ const ROUTES = [
         end: true,
         exact: true,
         element: <Home />, 
-    },
-    {
-        path: "/addvideo",
-        key: "AddVideo",
-        end: true,
-        exact: true,
-        element: <AddVideo/>, 
     },
     {
         path: "/video/:videoId",

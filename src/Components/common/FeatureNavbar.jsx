@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './FeatureNavbar.module.css';
 import {NavLink} from 'react-router-dom';
-import {MdHome, MdAddToPhotos, MdVideoLibrary, MdBookmark, MdSearch} from 'react-icons/md'
+import {MdHome, MdVideoLibrary, MdBookmark, MdSearch} from 'react-icons/md'
 
 export default function FeatureNavbar() {
     return (
@@ -15,16 +15,10 @@ export default function FeatureNavbar() {
                 <MdSearch className="textLg"/>
                 <span className={`${styles.nav_label} pt2`}>Search</span>
             </NavLink>
-
-            <NavLink end activeClassName="active_link" to="/addVideo" className={` ${styles.nav_link} borderNone  bgTransparent`}>
-                <MdAddToPhotos className="textLg"/>
-                <span className={`${styles.nav_label} pt2`}>Add Video</span>
-            </NavLink>
             
             <NavLink end activeClassName="active_link" to="/playlists/savedVideos" className={` ${styles.nav_link} borderNone  bgTransparent`}>
                 <MdBookmark className="textLg" />
                 <span className={`${styles.nav_label} pt2`}>Saved Videos</span>
-
             </NavLink>
             
             <NavLink end activeClassName="active_link" to="/playlists" className={` ${styles.nav_link} borderNone  bgTransparent`}>
