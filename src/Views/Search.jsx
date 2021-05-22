@@ -147,7 +147,7 @@ export default function Search() {
                 <>
                     <div className="displayGrid gridCols12 itemsCenter mt4 mb4 md:mt12">
                         <span className="gridColSpan7 md:gridColSpan9 pt2 pb2">
-                            Showing {results.length} results for {searchState.query}
+                            Showing <span className="fontSemiBold">{results.length}</span> results for <span className="fontSemiBold">{searchState.query}</span>
                         </span>
 
                         <label className="gridColSpan5 md:gridColSpan3 displayFlex itemsCenter pt2 pb2" style={{justifyContent: "flex-end"}}>
@@ -159,7 +159,7 @@ export default function Search() {
                         </label>
                     </div>
 
-                    <div className="displayGrid gridCols2">
+                    <div className="displayGrid gridCols2 gridGap4">
                         {/* videolist */}
                         {
                             results.map(result => {
