@@ -20,7 +20,18 @@ export function AuthProvider({children}) {
             initialState.token = JSON.parse(localToken);
             initialState.userId = JSON.parse(localUserId);
             initialState.username = JSON.parse(localUsername);
+            
+            let userData = {
+                id: JSON.parse(localUserId),
+                name: JSON.parse(localUsername),
+            }
+            // dispatch to change state as well
+            authDispatch({
+                type: 'LOGIN',
+                payload: userData
+            })
         }
+
     }, [localToken])
 
 	console.log('inside auth provider..')
