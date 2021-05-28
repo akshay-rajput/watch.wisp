@@ -1,9 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './PlaylistVideoCard.module.css';
 import {MdVisibility, MdThumbUp, MdBookmark, MdBookmarkBorder, MdPlaylistAdd} from 'react-icons/md';
 import {convertNumberScale} from '../../utils';
+import SaveVideoButton from '../common/SaveVideoButton';
+import PlaylistPopup from '../common/PlaylistPopup';
 
 export default function PlaylistVideoCard({video}) {
+    const [isPlaylistPopupOpen, setIsPlaylistPopupOpen] = useState(false)
+
+    function openPlaylistPopup(){
+        setIsPlaylistPopupOpen(!isPlaylistPopupOpen);
+    }
+
+    function closePopup(){
+        setIsPlaylistPopupOpen(false);
+    }
+
+    
     return (
         <div className={`${styles.playlist_video_card} gridColSpan4 md:gridColSpan1`}>
             <img src={video.snippet.thumbnailUrl} alt="video" className={`${styles.playlist_video_card_image}`} />
@@ -25,16 +38,17 @@ export default function PlaylistVideoCard({video}) {
                 </div>
 
                 <div className="playlist_video_card_actions displayFlex mt4 itemsCenter" style={{justifyContent: 'flex-end'}}>
-                    <button className={`${styles.playlist_video_card_action} rounded ml2 mr2`}>
-                        <MdBookmark />
-                        <MdBookmarkBorder />
-                    </button>
+                    
+                    <SaveVideoButton video={video} />
 
-                    <button className={`${styles.playlist_video_card_action} rounded`}>
-                        <MdPlaylistAdd />
+                    <button onClick={openPlaylistPopup} className={`${styles.playlist_video_card_action} rounded`} title={'Add to playlist'}>
+                        <MdPlaylistAdd />    
                     </button>
                 </div>
 
+                {   isPlaylistPopupOpen &&
+                    <PlaylistPopup isOpen={isPlaylistPopupOpen} videoData={video} closePopup = {closePopup} />
+                }
             </div>
             
         </div>
