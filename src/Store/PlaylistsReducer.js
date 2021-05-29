@@ -5,6 +5,7 @@ const actionTypes = {
     removeFromPlaylist: "REMOVE_FROM_PLAYLIST",
     addToSavedVideos: "ADD_TO_SAVEDVIDEOS",
     removeFromSavedVideos: "REMOVE_FROM_SAVEDVIDEOS",
+    editPlaylistName: "EDIT_PLAYLIST_NAME",
     createPlaylist: "CREATE_PLAYLIST",
     deletePlaylist: "DELETE_PLAYLIST",
     resetPlaylists: "RESET_PLAYLISTS"
@@ -74,6 +75,22 @@ const PlaylistsReducer = (state, action) => {
             return {
                 ...state,
                 playlists: playlistsAfterRemove
+            }
+
+        case actionTypes.editPlaylistName:
+            let playlistsAfterRename = state.playlists.map(playlist => {
+                if(playlist._id === payload.playlistId){
+                    return {  
+                        ...playlist, 
+                        name: payload.playlistName
+                    }
+                }
+                return playlist;
+            })
+
+            return {
+                ...state,
+                playlists: playlistsAfterRename
             }
 
         case actionTypes.addToSavedVideos:
