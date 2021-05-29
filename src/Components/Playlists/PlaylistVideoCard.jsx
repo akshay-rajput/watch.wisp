@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styles from './PlaylistVideoCard.module.css';
 import {MdVisibility, MdThumbUp, MdBookmark, MdBookmarkBorder, MdPlaylistAdd} from 'react-icons/md';
 import {convertNumberScale} from '../../utils';
+import {Link} from 'react-router-dom';
 import SaveVideoButton from '../common/SaveVideoButton';
 import PlaylistPopup from '../common/PlaylistPopup';
 
@@ -23,11 +24,10 @@ export default function PlaylistVideoCard({video}) {
             
             <div className={`${styles.playlist_video_card_info} displayFlex flexCol`}>
                 <div className="flexGrow">
-                    <h4 className={`${styles.playlist_video_card_title} md:mb2 fontNormal`}>
+                    <Link to={`/video/${video._id}`} className={`${styles.playlist_video_card_title} displayBlock md:mb2 fontNormal`}>
                         {video.snippet.name}
-                    </h4>
-
-                    <div className="playlist_video_card_stats displayFlex itemsCenter mt1">
+                    </Link>
+                    <div className="playlist_video_card_stats displayFlex itemsCenter mt2">
                         <span className="textXs md:textSm mr4 displayFlex itemsCenter">
                             <MdVisibility className="mr1" /> {convertNumberScale(video.views)}
                         </span>
