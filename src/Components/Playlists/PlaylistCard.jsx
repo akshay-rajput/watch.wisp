@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, Navigate} from 'react-router-dom';
+import axios from 'axios';
+import {usePlaylists} from '../../Store/PlaylistsContext';
 import {MdEdit, MdSave, MdDeleteForever} from 'react-icons/md';
 import styles from './PlaylistCard.module.css';
 
@@ -9,12 +11,19 @@ export default function PlaylistCard({playlistData}) {
     const [editingPlaylist, setEditingPlaylist] = useState(false);
     const [playlistUpdateOn, setPlaylistUpdateOn] = useState('')
 
+    const [playlistName, setPlaylistName] = useState("")
+
+    const {playlistsState, playlistsDispatch} = usePlaylists();
+    
+    // format update date
     useEffect(() => {
         let update = new Date(playlistData.updatedAt);
         
         update = update.getDate() +'-'+ update.toLocaleString('default', { month: 'short' }) +'-' + update.getFullYear()
         
-        setPlaylistUpdateOn(playlistUpdateOn => update);
+        setPlaylistUpdateOn(update);
+        
+        setPlaylistName(playlistData.name);
 
         return () => {
             setPlaylistUpdateOn('');
@@ -25,17 +34,59 @@ export default function PlaylistCard({playlistData}) {
         setEditingPlaylist(editingPlaylist => !editingPlaylist);
     }
 
+    function inputChange(event){
+        setPlaylistName(event.target.value);
+    }
+
+    async function savePlaylist(){
+        let playlistToUpdate = {...playlistData};
+        playlistToUpdate.name = playlistName;
+            
+        console.log("saving playlist: ", playlistToUpdate);
+
+        try{
+            const response = await axios.post('https://watch-wisp.herokuapp.com/playlists', playlistToUpdate, {
+                        // const response = await axios.post('http://localhost:4000/playlists', playlistToUpdate, {
+                            headers: {
+                                playlistid: playlistToUpdate._id
+                            }
+                        })
+            console.log('response of edit playlsit: ', response)
+            
+            playlistsDispatch({
+                type: 'EDIT_PLAYLIST_NAME',
+                payload: {
+                    playlistId: playlistData._id,
+                    playlistName: playlistName
+                }
+            })
+         
+            // toggle back
+            toggleEditPlaylist();
+        }
+        catch(error){
+            console.log('error saving playlist..', error);
+        }
+
+    }
+
     return (
         <div className={`${styles.playlist_card}`}>
             <div className="displayGrid gridCols11 pl2 pr2 pt1 pb1">
                 <div className="gridColSpan10">
-                    <Link to={`/playlists/${playlistData._id}`} state={playlistData} className="md:textRg pl2 pt1 pb1">
-                        {
-                            playlistData.name.length > 20 ? playlistData.name.substring(0,20)+'...' : playlistData.name
-                        }
-                    </Link>
+                    {
+                        !editingPlaylist ? 
+                        <Link to={`/playlists/${playlistData._id}`} state={playlistData} className={`${styles.playlist_card_title} md:textRg pl2 pt1 pb1`}>
+                            {
+                                playlistData.name.length > 20 ? playlistData.name.substring(0,20)+'...' : playlistData.name
+                            }
+                        </Link>
+                        : 
+                        <input type="text" value={playlistName} onChange={inputChange} className={`rounded md:textRg pl2 pt1 pb1 border borderGray3 bgBlue1`}
+                               placeholder="Enter playlist name" name="playlistName" id="playlistName" />
+                    }
                     
-                    <div className="textGray4 displayFlex flexWrap itemsCenter pl2 pr2 pt1 pb1">
+                    <div className="textGray4 displayFlex flexWrap itemsCenter mt1 pl2 pr2 pt1 pb1">
                         <small className="mr1">{playlistData.videos.length} Videos</small>
                         &bull;
                         <small className="ml1 mr1">
@@ -57,7 +108,7 @@ export default function PlaylistCard({playlistData}) {
                     <div className={`${styles.playlist_card_actions} displayFlex flexCol itemsCenter`}>
                         {
                             editingPlaylist ? 
-                            <button onClick={toggleEditPlaylist}  className={`${styles.playlist_card_button} gridColSpan1`}>
+                            <button onClick={savePlaylist}  className={`${styles.playlist_card_button} gridColSpan1`}>
                                 <MdSave />                    
                             </button>
                             :
