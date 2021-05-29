@@ -8,6 +8,14 @@
     border-radius: 4px 4px 0 0;
 }
 
+.playlist_card_title{
+    color: var(--dark);
+}
+.playlist_card_title:hover{
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
 .playlist_card_actions{
     justify-content: flex-start;
 }
