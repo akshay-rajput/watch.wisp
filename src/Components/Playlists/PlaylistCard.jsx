@@ -102,8 +102,8 @@ export default function PlaylistCard({playlistData}) {
 
     return (
         <div className={`${styles.playlist_card}`}>
-            <div className="displayGrid gridCols11 pl2 pr2 pt1 pb1">
-                <div className="gridColSpan10 pt1">
+            <div className="displayGrid hFull gridCols11 pl2 pr2 pt1 pb1">
+                <div className="gridColSpan10 displayFlex justifyBetween flexCol pt1">
                     {
                         !editingPlaylist ? 
                         <Link to={`/playlists/${playlistData._id}`} className={`${styles.playlist_card_title} md:textRg pl2 `} title={playlistData.name}>
@@ -116,7 +116,7 @@ export default function PlaylistCard({playlistData}) {
                                placeholder="Enter playlist name" name="playlistName" id="playlistName" />
                     }
                     
-                    <div className="textGray4 displayFlex flexWrap itemsCenter mt1 pl2 pr2 pt1 pb1">
+                    <div className="textGray4 flexGrow displayFlex flexWrap itemsCenter mt1 pl2 pr2 pt1 pb1">
                         <small className="mr1">{playlistData.videos.length} Videos</small>
                         &bull;
                         <small className="ml1 mr1">
@@ -128,7 +128,7 @@ export default function PlaylistCard({playlistData}) {
                         </small>
                     </div>
 
-                    <div className=" displayGrid gridCols2">
+                    <div className={`${styles.playlist_card_viewlink}`}>
                         <Link to={`/playlists/${playlistData._id}`} className={`displayFlex itemsCenter p2 textBlue4 hover:textBlue6`}>
                             View Playlist
                             <MdChevronRight className="textMd" />

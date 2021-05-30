@@ -32,3 +32,7 @@
 .playlist_card_button:hover{
     background-color: var(--secondary);
 }
+
+.playlist_card_viewlink{
+    width: max-content;
+}
