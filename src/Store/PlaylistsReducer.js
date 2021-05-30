@@ -131,7 +131,7 @@ const PlaylistsReducer = (state, action) => {
         
         case actionTypes.deletePlaylist:
             let updatedListOfPlaylists = state.playlists.filter(playlist => {
-                return playlist._id !== payload.playlist._id;
+                return playlist._id !== payload.playlistId;
             })
             console.log('after delete: ', updatedListOfPlaylists);
 
