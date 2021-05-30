@@ -13,6 +13,17 @@ export default function Playlists() {
             {
                 authState.token && playlistsState.playlists ? 
                 <div className="displayGrid md:gridCols4 gridGap4">
+                    <div className="gridColSpan4 mb4">
+                        <h2 className="displayFlex itemsCenter">
+                            Playlists <small className="ml1 textRg textGray4">({playlistsState.playlists.length})</small>
+                        </h2>
+                        {
+                            playlistsState.playlists.length > 1 && 
+                            <p className="mt2 textSm textGray4">
+                                You can edit your playlists here. Default Playlists cannot be edited. 
+                            </p>
+                        }
+                    </div>
                     {   playlistsState.playlists.map(playlist => {
                             return(
                                 <PlaylistCard playlistData = {playlist} key={playlist._id} />
