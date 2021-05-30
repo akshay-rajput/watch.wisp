@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import axios from 'axios';
 import {usePlaylists} from '../../Store/PlaylistsContext';
-import {MdEdit, MdSave, MdDeleteForever} from 'react-icons/md';
+import {MdEdit, MdSave, MdDeleteForever, MdChevronRight} from 'react-icons/md';
 import styles from './PlaylistCard.module.css';
 
 export default function PlaylistCard({playlistData}) {
@@ -70,13 +70,43 @@ export default function PlaylistCard({playlistData}) {
 
     }
 
+    async function deletePlaylistClicked(){
+        try{
+            console.log("deleting > ", playlistData._id);
+            const response = await axios.delete('https://watch-wisp.herokuapp.com/playlists', {
+                        // const response = await axios.post('http://localhost:4000/playlists', playlistToUpdate, {
+                            headers: {
+                                playlistid: playlistData._id
+                            }
+                        })
+
+            console.log('Delete playlist: ', response);
+            
+            if(response.data.deleted){
+                playlistsDispatch({
+                    type: 'DELETE_PLAYLIST',
+                    payload: {
+                        playlistId: playlistData._id,
+                        playlistName: playlistName
+                    }
+                })
+            }
+            else{
+                console.log('Problem deleting the playlist..', response.data);
+            }
+        }
+        catch(error){
+            console.log('Error deleting: ', error);
+        }
+    }
+
     return (
         <div className={`${styles.playlist_card}`}>
             <div className="displayGrid gridCols11 pl2 pr2 pt1 pb1">
-                <div className="gridColSpan10">
+                <div className="gridColSpan10 pt1">
                     {
                         !editingPlaylist ? 
-                        <Link to={`/playlists/${playlistData._id}`} state={playlistData} className={`${styles.playlist_card_title} md:textRg pl2 pt1 pb1`}>
+                        <Link to={`/playlists/${playlistData._id}`} className={`${styles.playlist_card_title} md:textRg pl2 `} title={playlistData.name}>
                             {
                                 playlistData.name.length > 20 ? playlistData.name.substring(0,20)+'...' : playlistData.name
                             }
@@ -98,14 +128,17 @@ export default function PlaylistCard({playlistData}) {
                         </small>
                     </div>
 
-                    <button className={`bgTransparent borderNone p2 textBlue4 hover:textBlue6`}>
-                        View Playlist
-                    </button>
+                    <div className=" displayGrid gridCols2">
+                        <Link to={`/playlists/${playlistData._id}`} className={`displayFlex itemsCenter p2 textBlue4 hover:textBlue6`}>
+                            View Playlist
+                            <MdChevronRight className="textMd" />
+                        </Link>
+                    </div>
                 </div>
 
                 {
                     isEditable && 
-                    <div className={`${styles.playlist_card_actions} displayFlex flexCol itemsCenter`}>
+                    <div className={`${styles.playlist_card_actions} displayFlex flexCol itemsCenter mt1`}>
                         {
                             editingPlaylist ? 
                             <button onClick={savePlaylist}  className={`${styles.playlist_card_button} gridColSpan1`}>
@@ -116,9 +149,8 @@ export default function PlaylistCard({playlistData}) {
                                 <MdEdit />                    
                             </button>
                         }
-
                         
-                        <button className={`gridColSpan1 displayFlex itemsCenter p1 mt3 bgTransparent borderNone textRed4 hover:bgRed1 hover:textRed6 rounded`}>
+                        <button onClick={deletePlaylistClicked} className={`gridColSpan1 displayFlex itemsCenter p1 mt2 bgTransparent borderNone textRed4 hover:bgRed1 hover:textRed6 rounded`}>
                             <MdDeleteForever className="textMd"/>
                         </button>
                     </div>
