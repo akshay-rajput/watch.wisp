@@ -12,8 +12,8 @@ export default function Playlists() {
         <div>
             {
                 authState.token && playlistsState.playlists ? 
-                <div className="displayGrid md:gridCols4 gridGap4">
-                    <div className="gridColSpan4 mb4">
+                <div className="displayGrid gridCols1 md:gridCols4 gridGap4">
+                    <div className="md:gridColSpan4 mb4">
                         <h2 className="displayFlex itemsCenter">
                             Playlists <small className="ml1 textRg textGray4">({playlistsState.playlists.length})</small>
                         </h2>
