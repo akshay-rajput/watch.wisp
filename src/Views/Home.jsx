@@ -14,8 +14,8 @@ import {usePlaylists} from '../Store/PlaylistsContext';
 export default function Home() {
     const {playlistsState, playlistsDispatch} = usePlaylists();
 
-    // get all videos
     useEffect(() => {
+        // make request only if playlist is empty in state
         if(playlistsState.vocabularyVideoList.length < 1){
             ( async () => {
                 try{
@@ -46,7 +46,6 @@ export default function Home() {
                 <HomeVideoSlider videoList = {playlistsState.vocabularyVideoList} title = {'Vocabulary'} />
                 <HomeVideoSlider videoList = {playlistsState.pronunciationVideoList} title = {'Pronunciation'} />
                 <HomeVideoSlider videoList = {playlistsState.hindiVideoList} title = {'English through Hindi'} />
-                
             </div>
         </div>
     )

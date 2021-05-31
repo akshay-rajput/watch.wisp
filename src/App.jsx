@@ -55,13 +55,6 @@ function App() {
                             savedVideos = {...playlist};
                         }
                     })
-                    console.log('saved: ', savedVideos);
-                    let likedVideos = {};
-                    likedVideos = userPlaylists.map(playlist => {
-                        if(playlist.name === "Liked Videos"){
-                            return playlist;
-                        }
-                    })
 
                     playlistsDispatch(
                         {
@@ -70,7 +63,6 @@ function App() {
                                 userId: authState.userId,
                                 playlists: userPlaylists,
                                 savedVideos: savedVideos,
-                                likedVideos: likedVideos
                             }
                         }
                     )
