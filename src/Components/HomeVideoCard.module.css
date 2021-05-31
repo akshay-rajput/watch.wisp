@@ -1,6 +1,6 @@
-.video_card{
+.video_card, .category_video_card{
     /* border: 1px solid var(--secondary); */
-    background-color: white;
+    background-color: var(--gray-light);
     border: 1px solid var(--secondary);
     border-radius: 5px;
 
@@ -15,10 +15,16 @@
 
 .video_card_title{
     /* two line for title */
-    height: 2.5rem;
+    color: var(--dark);
+    display: block;
+    max-height: 2.5rem;
     word-break: break-word;
     overflow: hidden;
     position: relative;
+}
+.video_card_title:hover{
+    color: var(--primary);
+    text-decoration: none;
 }
 .video_card_title::before{
     content: '';
@@ -70,6 +76,9 @@
 @media (min-width: 768px) {
     .video_card{
         min-width: 330px;
+    }
+    .category_video_card{
+        min-width: 150px;
     }
     
     /* only one line for name */
