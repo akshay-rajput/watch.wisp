@@ -1,65 +1,51 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios';
+// import axios from 'axios';
 import HomeVideoSlider from '../Components/HomeVideoSlider';
+import {
+    getVideos,
+    hindiVideos,
+    vocabularyVideos,
+    pronunciationVideos
+} from '../getVideos';
+
+import {usePlaylists} from '../Store/PlaylistsContext';
+
 
 export default function Home() {
-    // const [videos, setvideos] = useState([]);
-    const [hindiVideos, setHindiVideos] = useState([]);
-    const [pronunciationVideos, setPronunciationVideos] = useState([]);
-    const [vocabularyVideos, setVocabularyVideos] = useState([]);
+    const {playlistsState, playlistsDispatch} = usePlaylists();
 
     // get all videos
     useEffect(() => {
-        getVideos();
-        console.log('this runs after request...');
-    }, []);
-
-    async function getVideos(){
-        try{
-            const response = await axios.get('https://watch-wisp.herokuapp.com/videos');
-
-            // setvideos(response.data.videos)
-            console.log('success videoList :', response)
-
-            // sort
-            sortVideos(response.data.videos);
+        if(playlistsState.vocabularyVideoList.length < 1){
+            ( async () => {
+                try{
+                    await getVideos();
+    
+                    playlistsDispatch(
+                        {
+                            type: "CATEGORIZE_VIDEOS",
+                            payload: {
+                                hindiVideos,
+                                vocabularyVideos,
+                                pronunciationVideos
+                            }
+                        }
+                    )
+                }
+                catch(error){
+                    console.log('Home - Error getting videos:', error)
+                }
+            })()
         }
-        catch(error){
-            console.log('error getting videos: ', error);
-        }
-    }
 
-    function sortVideos(videoList){
-        let sortedHindiVideos = []
-        let sortedVocabularyVideos = []
-        let sortedPronunciationVideos = []
-            
-        videoList.map(video => {
-            
-            if(video.category == "Hindi"){
-                sortedHindiVideos.push(video);
-            }
-
-            if(video.category == "Vocabulary"){
-                sortedVocabularyVideos.push(video)
-            }
-
-            if(video.category == "Pronunciation"){
-                sortedPronunciationVideos.push(video)
-            }
-        })
-
-        setHindiVideos(sortedHindiVideos);
-        setVocabularyVideos(sortedVocabularyVideos);
-        setPronunciationVideos(sortedPronunciationVideos);
-    }
+    }, [getVideos, playlistsState.vocabularyVideoList]);
 
     return (
         <div>
             <div className="">
-                <HomeVideoSlider videoList = {vocabularyVideos} title = {'Vocabulary'} />
-                <HomeVideoSlider videoList = {pronunciationVideos} title = {'Pronunciation'} />
-                <HomeVideoSlider videoList = {hindiVideos} title = {'English through Hindi'} />
+                <HomeVideoSlider videoList = {playlistsState.vocabularyVideoList} title = {'Vocabulary'} />
+                <HomeVideoSlider videoList = {playlistsState.pronunciationVideoList} title = {'Pronunciation'} />
+                <HomeVideoSlider videoList = {playlistsState.hindiVideoList} title = {'English through Hindi'} />
                 
             </div>
         </div>
