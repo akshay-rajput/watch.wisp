@@ -1,10 +1,14 @@
 
 const actionTypes = {
     getAllPlaylists: "GET_ALL_PLAYLISTS",
+    categorizeVideos: "CATEGORIZE_VIDEOS",
+
     addToPlaylist: 'ADD_TO_PLAYLIST',
     removeFromPlaylist: "REMOVE_FROM_PLAYLIST",
+    
     addToSavedVideos: "ADD_TO_SAVEDVIDEOS",
     removeFromSavedVideos: "REMOVE_FROM_SAVEDVIDEOS",
+    
     editPlaylistName: "EDIT_PLAYLIST_NAME",
     createPlaylist: "CREATE_PLAYLIST",
     deletePlaylist: "DELETE_PLAYLIST",
@@ -15,7 +19,9 @@ export const initialState = {
     userId: '',
     playlists: [],
     savedVideos: {},
-    likedVideos: {}
+    vocabularyVideoList: [],
+    pronunciationVideoList: [],
+    hindiVideoList: [],
 }
 
 const PlaylistsReducer = (state, action) => {
@@ -31,6 +37,15 @@ const PlaylistsReducer = (state, action) => {
                 userId: payload.userId,
                 playlists: payload.playlists,
                 savedVideos: payload.savedVideos
+            }
+
+        case actionTypes.categorizeVideos:
+            console.log('payload categorize - ', payload)
+            return {
+                ...state,
+                vocabularyVideoList: payload.vocabularyVideos,
+                pronunciationVideoList: payload.pronunciationVideos,
+                hindiVideoList: payload.hindiVideos
             }
         
         case actionTypes.addToPlaylist:
