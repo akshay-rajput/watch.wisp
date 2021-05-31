@@ -3,10 +3,13 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {useAuth} from '../../Store/AuthContext';
 import PlaylistVideoCard from './PlaylistVideoCard';
+import {usePlaylists} from '../../Store/PlaylistsContext';
 import {Link} from 'react-router-dom';
 
 export default function UserPlaylist() {
     let {playlistId} = useParams();
+    const {playlistsState, playlistsDispatch} = usePlaylists();
+
     const [playlistData, setPlaylistData] = useState({})
     const {authState, authDispatch} = useAuth();
 
@@ -16,7 +19,7 @@ export default function UserPlaylist() {
         return () => {
             setPlaylistData({});
         }
-    }, [playlistId])
+    }, [playlistId, playlistsState.playlists])
 
     async function getPlaylistData(){
         try{
