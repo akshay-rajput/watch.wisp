@@ -38,7 +38,7 @@ export default function Home() {
             })()
         }
 
-    }, [getVideos, playlistsState.vocabularyVideoList]);
+    }, []);
 
     return (
         <div>
