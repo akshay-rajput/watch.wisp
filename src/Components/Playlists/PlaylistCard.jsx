@@ -108,7 +108,7 @@ export default function PlaylistCard({playlistData}) {
                         !editingPlaylist ? 
                         <Link to={`/playlists/${playlistData._id}`} className={`${styles.playlist_card_title} md:textRg pl2 `} title={playlistData.name}>
                             {
-                                playlistData.name.length > 20 ? playlistData.name.substring(0,20)+'...' : playlistData.name
+                                playlistData.name.length > 26 ? playlistData.name.substring(0,25)+'...' : playlistData.name
                             }
                         </Link>
                         : 
