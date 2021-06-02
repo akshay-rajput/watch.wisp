@@ -5,6 +5,11 @@ import Video from "./Views/Video";
 import Playlists from "./Views/Playlists";
 import SavedVideos from "./Components/Playlists/SavedVideos";
 import LikedVideos from "./Components/Playlists/LikedVideos";
+import UserPlaylist from "./Components/Playlists/UserPlaylist";
+
+import PronunciationVideos from "./Views/PronunciationVideos";
+import VocabularyVideos from "./Views/VocabularyVideos";
+import HindiVideos from "./Views/HindiVideos";
 
 import Search from "./Views/Search";
 import Login from "./Views/Login";
@@ -48,11 +53,33 @@ const ROUTES = [
         exact: true,
         element: <Playlists/>,
     },
+    {
+        path: "/playlists/:playlistId",
+        key: "UserPlaylist",
+        end: false,
+        exact: false,
+        element: <UserPlaylist/>,
+    },
 
     {
         path: "/search",
         key: "Search",
         element: <Search/>, 
+    },
+    {
+        path: "/category/pronunciation",
+        key: "PronunciationVideos",
+        element: <PronunciationVideos />, 
+    },
+    {
+        path: "/category/vocabulary",
+        key: "VocabularyVideos",
+        element: <VocabularyVideos />, 
+    },
+    {
+        path: "/category/hindi",
+        key: "Hindi",
+        element: <HindiVideos />, 
     },
     {
         path: "/login",
