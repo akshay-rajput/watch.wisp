@@ -7,7 +7,7 @@ import axios from 'axios';
 import {usePlaylists} from '../../Store/PlaylistsContext';
 import {useAuth} from '../../Store/AuthContext';
 
-export default function SaveVideoButton({video}) {
+export default function SaveVideoButton({video, extendedButton}) {
     const {authState, authDispatch} = useAuth();
     // get all playlist names from context
     const {playlistsState, playlistsDispatch} = usePlaylists();
@@ -121,8 +121,22 @@ export default function SaveVideoButton({video}) {
         <button onClick={() => toggleSaveVideo("Saved Videos")} className={`${styles.video_card_button} mr2`} title={'Add to saved videos'}>
             {
                 playlistsState.savedVideos?.videos?.length > 0 && checkExistanceInArray(playlistsState.savedVideos.videos, video._id) ? 
-                <MdBookmark  className="textBlue4"/> : <MdBookmarkBorder className="textBlue4" />
+                <span className="displayFlex itemsCenter">
+                    <MdBookmark className="textBlue4"/>
+                    {
+                        extendedButton === true ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Saved</span> : ""
+                    }
+                </span> 
+                : 
+                <span className="displayFlex itemsCenter">
+                    <MdBookmarkBorder className="textBlue4" />
+                    {
+                        !extendedButton === false ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Save</span>: ""
+                    }
+                </span>
+                
             }
+            
         </button>
     )
 }
