@@ -25,7 +25,7 @@ function App() {
 
     // auth
     useEffect(() => {
-        console.log('app token: ', authState.token);
+        // console.log('app token: ', authState.token);
 
         if(authState.token){
             setIsUserLoggedIn(true);
@@ -75,7 +75,7 @@ function App() {
         else{
             playlistsDispatch({type: "RESET_PLAYLISTS"});
 
-            console.log('user login required to fetch playlists...');
+            // console.log('user login required to fetch playlists...');
         }
             
     }, [authState.userId]);

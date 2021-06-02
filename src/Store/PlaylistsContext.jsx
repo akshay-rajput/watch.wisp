@@ -10,7 +10,7 @@ export const usePlaylists = () => {
 export function PlaylistsProvider({children}) {
 
     const [playlistsState, playlistsDispatch] = useReducer(PlaylistsReducer, initialState);
-    console.count('inside playlist context..')
+    // console.count('inside playlist context..')
     return <PlaylistsContext.Provider value = {{ playlistsState, playlistsDispatch }}>
         {children}
     </PlaylistsContext.Provider>
