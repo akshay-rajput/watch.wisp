@@ -37,7 +37,7 @@ export default function PronunciationVideos() {
             })()
         }
 
-    }, [getVideos, playlistsState.pronunciationVideoList]);
+    }, []);
 
     return (
         <div>

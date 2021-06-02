@@ -36,7 +36,7 @@ export default function VocabularyVideos() {
             })()
         }
 
-    }, [getVideos, playlistsState.vocabularyVideoList]);
+    }, []);
 
     return (
         <div>

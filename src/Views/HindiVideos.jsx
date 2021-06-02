@@ -37,7 +37,7 @@ export default function HindiVideos() {
             })()
         }
 
-    }, [getVideos, playlistsState.hindiVideoList]);
+    }, []);
 
     return (
         <div>
