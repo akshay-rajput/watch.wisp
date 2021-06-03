@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import styles from './PlaylistPopup.module.css';
 import {MdClose} from 'react-icons/md';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 import {usePlaylists} from '../../Store/PlaylistsContext';
 import {useAuth} from '../../Store/AuthContext';
 import {checkExistanceInArray, truncateText} from '../../utils';
@@ -141,31 +142,46 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
             <div onClick={closePopup} className={`${styles.modal_backdrop}`}></div>
 
             <div className={`${styles.modal_dialog} p4 rounded`}>
-                <h4 className="textMd fontNormal">Add to Playlist</h4>
-                <small className="mt1 mb4">
-                    Selected video:
-                    <span className="textGray4 fontSemiBold"> {truncateText(videoData.snippet.name, 30)}</span>
-                </small>
-
-                <form onSubmit={createPlaylist} className="displayFlex flexCol">
-                    <div className="mb4">
-                        {
-                            playlistsState.playlists.map(playlist => {
-                                console.log('exists: ', playlist.videos.length)
-                                return(
-                                    <label key={playlist._id} className="mb2 displayBlock">
-                                        <input type="checkbox" checked={checkExistanceInArray(playlist.videos, videoData._id)} 
-                                                name={playlist.name} onChange={toggleAddToPlaylist} /> {playlist.name}
-                                    </label>
-                                )
-                            })
-                        }
+                
+                {
+                    authState.token ?
+                    <div>
+                        <h4 className="textMd fontNormal">Add to Playlist</h4>
+                        <small className="mt1 mb4">
+                            Selected video:
+                            <span className="textGray4 fontSemiBold"> {truncateText(videoData.snippet.name, 30)}</span>
+                        </small> 
+                        <form onSubmit={createPlaylist} className="displayFlex flexCol">
+                            <div className="mb4">
+                                {
+                                    playlistsState.playlists.map(playlist => {
+                                        console.log('exists: ', playlist.videos.length)
+                                        return(
+                                            <label key={playlist._id} className="mb2 displayBlock">
+                                                <input type="checkbox" checked={checkExistanceInArray(playlist.videos, videoData._id)} 
+                                                        name={playlist.name} onChange={toggleAddToPlaylist} /> {playlist.name}
+                                            </label>
+                                        )
+                                    })
+                                }
+                            </div>
+                            
+                            <input type="text" value={customPlaylistName} onChange={handleInputChange}
+                                    placeholder="Enter playlist name" className="mb2 textRg p2 rounded border borderGray4" />
+                            <button className="p2 rounded borderNone bgBlue5 hover:bgBlue4 textWhite">Create Playlist</button>
+                        </form>
                     </div>
-                    
-                    <input type="text" value={customPlaylistName} onChange={handleInputChange}
-                            placeholder="Enter playlist name" className="mb2 textRg p2 rounded border borderGray4" />
-                    <button className="p2 rounded borderNone bgBlue5 hover:bgBlue4 textWhite">Create Playlist</button>
-                </form>
+                    :
+                    <div className="textCenter pt8 pb8">
+                        <h3 className="textLg mb2">
+                            Login required
+                        </h3>
+                        <p className="mb8 textSm textGray4">You need to be logged in to add video to playlist.</p>
+                        <Link to="/login" className="link-button pt2 pb2 pl4 pr4 hover:textBlue5 hover:bgBlue3 mr6 rounded bgBlue5 textWhite">Login</Link>
+                        <Link to="/signup" className="link-button pt2 pb2 pl4 pr4 rounded bgBlue2 textBlue6">Signup</Link>
+                        
+                    </div>
+                }
 
                 {   showToast &&
                     <p className="p2 rounded bgGreen2 textGreen6 mt4" >
