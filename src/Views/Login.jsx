@@ -1,7 +1,7 @@
 import React, {useState, useContext, useRef} from 'react'
 import styles from './Login.module.css';
 import {MdVisibility, MdVisibilityOff} from 'react-icons/md';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 import axios from 'axios';
 import useLocalStorage from '../Hooks/useLocalStorage';
@@ -25,6 +25,8 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const password = useRef(null);
 
+    let navigate = useNavigate();
+
     async function doLogin(event){
         event.preventDefault();
         console.log('login: ', loginData);
@@ -40,27 +42,40 @@ export default function Login() {
             const response = await axios.post("https://watch-wisp.herokuapp.com/login", loginData);
             console.log('login response: ', response);
 
-            let userData = {
-                name: response.data.user.name,
-                id: response.data.user._id,
+            if(response.data.success){
+                let userData = {
+                    name: response.data.user.name,
+                    id: response.data.user._id,
+                }
+    
+                authDispatch({
+                    type: 'LOGIN',
+                    payload: userData
+                })
+    
+                // store in local
+                setUserId(userData.id);
+                setUsername(userData.name);
+                setToken(userData.id);
+    
+                // finish loading
+                setLoginData({
+                    ...loginData,
+                    isSubmitting: false,
+                    errorMessage: null
+                })
+
+                navigate('/');
             }
-
-            authDispatch({
-                type: 'LOGIN',
-                payload: userData
-            })
-
-            // store in local
-            setUserId(userData.id);
-            setUsername(userData.name);
-            setToken(userData.id);
-
-            // finish loading
-            setLoginData({
-                ...loginData,
-                isSubmitting: false,
-                errorMessage: null
-            })
+            else{
+                console.log('response unsuccessful: ', response.message);
+                // finish loading
+                setLoginData({
+                    ...loginData,
+                    isSubmitting: false,
+                    errorMessage: response.message
+                })
+            }
 
         }
         catch(error){
@@ -83,16 +98,6 @@ export default function Login() {
         })
     }
 
-    // function togglePasswordVisibility(){
-    //     setShowPassword(showPassword => !showPassword);
-        
-    //     if(showPassword){
-    //         password.current.type = 'text';
-    //     }else{
-    //         password.current.type = 'password';
-    //     }
-    // }
-
     return (
         <div className={styles.login_form + " border borderGray2"}>
             <h3 className={styles.login_heading}>Login</h3>
@@ -102,14 +107,14 @@ export default function Login() {
                 <div className={"displayFlex flexCol pl4 pr4 mb4"}>
                     <label htmlFor="user_email" className="textSm textGray4 mb1">Email</label>
                     <input type="email" id="user_email" name="email" value={loginData.email} onChange={handleInputChange}
-                        autoComplete="true" placeholder="abc@example.com" className={styles.form_input}/>
+                        autoComplete="true" placeholder="abc@example.com" className={styles.form_input} required/>
                 </div>
 
                 <div className={"displayFlex flexCol pl4 pr4 mb4"}>
                     <label htmlFor="user_password" className="textSm textGray4 mb1">Password</label>
                     <div className="" style={{position: 'relative'}}>
                         <input type={showPassword ? "text":"password"} id="user_password" name='password' ref={password}  onChange={handleInputChange}
-                                placeholder="Enter Password" className={styles.form_input + " wFull"}/>
+                                placeholder="Enter Password" className={styles.form_input + " wFull"} required/>
 
                         <span onClick={() => setShowPassword(!showPassword)} className={styles.password_visibility_toggler + " cursorPointer displayBlock textGray4"}>
                             {

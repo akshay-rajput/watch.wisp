@@ -1,7 +1,7 @@
 import React, {useState, useContext, useRef} from 'react'
 import styles from './Login.module.css';
 import {MdVisibility, MdVisibilityOff} from 'react-icons/md';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 import useLocalStorage from '../Hooks/useLocalStorage';
 import {useAuth} from '../Store/AuthContext';
@@ -13,6 +13,8 @@ export default function Signup() {
     const [userId, setUserId] = useLocalStorage("userId", "");
     const [username, setUsername] = useLocalStorage("username", "");
     const [token, setToken] = useLocalStorage("token", null);
+
+    let navigate = useNavigate();
 
     const initialState = {
         name: "",
@@ -42,28 +44,40 @@ export default function Signup() {
             const response = await axios.post("https://watch-wisp.herokuapp.com/users", signupData);
             console.log('user response: ', response);
 
-            let userData = {
-                name: response.data.user.name,
-                id: response.data.user._id,
+            if(response.data.success){
+                let userData = {
+                    name: response.data.user.name,
+                    id: response.data.user._id,
+                }
+    
+                authDispatch({
+                    type: 'LOGIN',
+                    payload: userData
+                })
+    
+                // store in local
+                setUserId(userData.id);
+                setUsername(userData.name);
+                setToken(userData.id);
+    
+                // finish loading
+                setSignupData({
+                    ...signupData,
+                    isSubmitting: false,
+                    errorMessage: null
+                })
+    
+                navigate('/');
             }
-
-            authDispatch({
-                type: 'LOGIN',
-                payload: userData
-            })
-
-            // store in local
-            setUserId(userData.id);
-            setUsername(userData.name);
-            setToken(userData.id);
-
-            // finish loading
-            setSignupData({
-                ...signupData,
-                isSubmitting: false,
-                errorMessage: null
-            })
-
+            else{
+                console.log('response unsuccessful')
+                // finish loading
+                setSignupData({
+                    ...signupData,
+                    isSubmitting: false,
+                    errorMessage: response.data.message
+                })
+            }
         }
         catch(error){
             console.log('Error signup: ', error);
