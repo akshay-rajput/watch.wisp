@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {usePlaylists} from '../../Store/PlaylistsContext';
 import {useAuth} from '../../Store/AuthContext';
+import nodataImage from '../../../public/nodata.svg';
+import styles from '../../Views/Search.module.css';
 import PlaylistVideoCard from './PlaylistVideoCard';
 
 export default function SavedVideos() {
@@ -11,7 +13,7 @@ export default function SavedVideos() {
     const [savedVideoList, setSavedVideoList] = useState([])
 
     useEffect(() => {
-        console.log('got saved videos..');
+        console.log('got saved videos..',playlistsState.savedVideos);
         
         if(playlistsState.savedVideos.videos){
             let videoList = [...playlistsState.savedVideos.videos];
@@ -60,24 +62,38 @@ export default function SavedVideos() {
                 <>
                     <div className="displayFlex justifyBetween itemsCenter mb6">
                         <h3 className="textLg fontSemiBold">Saved Videos <small className="textGray4">({savedVideoList.length})</small></h3>
-                        <label className="textSm">
-                            Sort by
-                            <select name="sortby" id="sortby" onChange={sortPlaylist} className="p1 rounded ml2">
-                                <option value="views">Views</option>
-                                <option value="likes">Likes</option>
-                            </select>
-                        </label>
+                        {   
+                            savedVideoList.length > 0 &&
+                            <label className="textSm">
+                                Sort by
+                                <select name="sortby" id="sortby" onChange={sortPlaylist} className="p1 rounded ml2">
+                                    <option value="views">Views</option>
+                                    <option value="likes">Likes</option>
+                                </select>
+                            </label>}
                     </div>
                     
-                    <div className="displayGrid gridCols4 gridGap4 mb8">
-                        {
-                            savedVideoList.map(video => {
-                                return(
-                                    <PlaylistVideoCard video={video} key={video._id}/>
-                                )
-                            })
-                        }
-                    </div>
+                    {
+                        savedVideoList.length > 0 ?
+                        <div className="displayGrid gridCols4 gridGap4 mb8">
+                            {
+                                savedVideoList.map(video => {
+                                    return(
+                                        <PlaylistVideoCard video={video} key={video._id}/>
+                                    )
+                                })
+                            }
+                        </div>
+                        :
+                        <div className="displayFlex flexCol justifyCenter itemsCenter p8">
+                            <img src={nodataImage} alt="No data" className={`${styles.nodata} mt4`} />
+
+                            <div className="mt6 textCenter">
+                                <h4 className="textGray4 textMd mb2">Playlist is empty</h4>
+                                <span className="textGray4">You have not saved any videos yet.</span>
+                            </div>
+                        </div>
+                    }
                 </>
                 :
                 <>
