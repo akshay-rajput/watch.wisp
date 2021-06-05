@@ -1,0 +1,22 @@
+.video_description{
+    background-color: var(--gray-light);
+    border-radius: 4px;
+    margin: 0.5rem -0.25rem;
+    padding: 0.25rem 0.5rem;
+    
+}
+
+.video_add_to_playlist{
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: var(--primary-dark);
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.video_add_to_playlist:hover{
+    background-color: var(--secondary);
+}

@@ -1,4 +1,4 @@
-.playlist_video_card{
+.playlist_video_card, .playlist_video_card_horizontal{
     border: 1px solid var(--secondary);
     background-color: var(--gray-light);
     /* padding: 0.5rem; */
@@ -32,7 +32,7 @@
 }
 .playlist_video_card_title{
     /* two line for title */
-    height: 2.6rem;
+    max-height: 2.6rem;
     word-break: break-word;
     overflow: hidden;
     position: relative;
@@ -59,6 +59,9 @@
     .playlist_video_card{
         grid-template-columns: 1fr;
     }
+    /* .playlist_video_card_horizontal{
+        grid-template-columns: 1fr;
+    } */
 
     .playlist_video_card_image{
         grid-column-start: span 5;
