@@ -139,6 +139,13 @@ const PlaylistsReducer = (state, action) => {
             let listOfPlaylists = [...state.playlists]
             listOfPlaylists.push(payload.playlist);
 
+            if(payload.createSavedVideoPlaylist){
+                return {
+                    ...state,
+                    playlists: listOfPlaylists,
+                    savedVideos: payload.playlist
+                }    
+            }
             return {
                 ...state,
                 playlists: listOfPlaylists
