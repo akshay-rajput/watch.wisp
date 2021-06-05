@@ -10,6 +10,7 @@ import wisplogo from '../../../wisp.png';
 
 export default function Navbar({isUserLoggedIn, username}) {
     const [showOptions, setShowOptions] = useState(false);
+    const {authState, authDispatch} = useAuth();
 
     function toggleUserOptions(){
         console.log('setting..', showOptions);
@@ -45,7 +46,7 @@ export default function Navbar({isUserLoggedIn, username}) {
                         isUserLoggedIn && 
                         <div onClick={toggleUserOptions} className={`${styles.user_info} cursorPointer displayFlex itemsCenter textGray2`}>
                             <div className="avatar-wrapper displayFlex itemsCenter bgGray6 w10 h10 roundedFull p1">
-                                <img src="https://avatars.dicebear.com/api/bottts/124562.svg" className="roundedFull wFull" />
+                                <img src={`https://avatars.dicebear.com/api/bottts/${authState.userId}.svg`} className="roundedFull wFull" />
                             </div>
                             
                             <button className="cursorPointer bgTransparent textRg textGray2 borderNone displayFlex itemsCenter">
