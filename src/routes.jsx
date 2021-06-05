@@ -4,7 +4,7 @@ import Video from "./Views/Video";
 
 import Playlists from "./Views/Playlists";
 import SavedVideos from "./Components/Playlists/SavedVideos";
-import LikedVideos from "./Components/Playlists/LikedVideos";
+// import LikedVideos from "./Components/Playlists/LikedVideos";
 import UserPlaylist from "./Components/Playlists/UserPlaylist";
 
 import PronunciationVideos from "./Views/PronunciationVideos";
@@ -34,12 +34,12 @@ const ROUTES = [
     },
     
     // playlist routes - order matters
-    {   path: '/playlists/likedVideos',
-        key: "likedVideos",
-        end: true,
-        exact: true,
-        element: <LikedVideos />
-    },
+    // {   path: '/playlists/likedVideos',
+    //     key: "likedVideos",
+    //     end: true,
+    //     exact: true,
+    //     element: <LikedVideos />
+    // },
     {   path: '/playlists/savedVideos',
         key: "savedVideos",
         end: true,
