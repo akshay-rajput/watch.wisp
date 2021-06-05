@@ -1,13 +1,14 @@
 
 const actionTypes = {
     login: 'LOGIN',
-    logout: "LOGOUT"
+    logout: "LOGOUT",
+    updateUsername: 'UPDATE_USERNAME'
 }
 
 export const initialState = {
-        userId: '',
-        username: '',
-        token: null,
+    userId: '',
+    username: '',
+    token: null,
 }
 
 const AuthReducer = (state, action) => {
@@ -24,6 +25,16 @@ const AuthReducer = (state, action) => {
                 userId: payload.id,
                 username: payload.name,
                 token: payload.id
+            }
+
+        case actionTypes.updateUsername:
+            let updatedName = `"${payload.name}"`;
+            console.log("change username: ", payload.name)
+            localStorage.setItem('username', updatedName);
+
+            return {
+                ...state,
+                username: payload.name,
             }
         
         case actionTypes.logout:
