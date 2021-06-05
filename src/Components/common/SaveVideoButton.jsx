@@ -39,7 +39,8 @@ export default function SaveVideoButton({video, extendedButton}) {
                     playlistsDispatch({
                         type: 'CREATE_PLAYLIST',
                         payload: {
-                            playlist: response.data.playlist
+                            playlist: response.data.playlist,
+                            createSavedVideoPlaylist: true
                         }
                     })
                 }
