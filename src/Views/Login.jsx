@@ -13,6 +13,7 @@ export default function Login() {
     const [userId, setUserId] = useLocalStorage("userId", "");
     const [username, setUsername] = useLocalStorage("username", "");
     const [token, setToken] = useLocalStorage("token", null);
+    const [userAvatar, setUserAvatar] = useLocalStorage("userAvatar", "");
 
     const initialState = {
         email: '',
@@ -29,7 +30,7 @@ export default function Login() {
 
     async function doLogin(event){
         event.preventDefault();
-        console.log('login: ', loginData);
+        // console.log('login: ', loginData);
         // loading
         setLoginData({
             ...loginData,
@@ -40,12 +41,16 @@ export default function Login() {
         // make a request and dispatch
         try{
             const response = await axios.post("https://watch-wisp.herokuapp.com/login", loginData);
+            // const response = await axios.post("http://localhost:4000/login", loginData);
+
             console.log('login response: ', response);
 
             if(response.data.success){
                 let userData = {
                     name: response.data.user.name,
                     id: response.data.user._id,
+                    token: response.data.token,
+                    avatarUrl: response.data.user.avatarUrl
                 }
     
                 authDispatch({
@@ -56,8 +61,9 @@ export default function Login() {
                 // store in local
                 setUserId(userData.id);
                 setUsername(userData.name);
-                setToken(userData.id);
-    
+                setToken(userData.token);
+                setUserAvatar(userData.avatarUrl);
+
                 // finish loading
                 setLoginData({
                     ...loginData,
@@ -79,13 +85,13 @@ export default function Login() {
 
         }
         catch(error){
-            console.log('Error signup: ', error);
+            console.log('Error login: ', error.response.data.message);
 
             // finish loading
-            setSignupData({
-                ...signupData,
+            setLoginData({
+                ...loginData,
                 isSubmitting: false,
-                errorMessage: error
+                errorMessage: error.response.data.message
             })
         }
 
