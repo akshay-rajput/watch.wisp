@@ -9,6 +9,7 @@ export const initialState = {
     userId: '',
     username: '',
     token: null,
+    userAvatar: ''
 }
 
 const AuthReducer = (state, action) => {
@@ -24,7 +25,8 @@ const AuthReducer = (state, action) => {
                 ...state,
                 userId: payload.id,
                 username: payload.name,
-                token: payload.id
+                token: payload.token,
+                userAvatar: payload.avatarUrl
             }
 
         case actionTypes.updateUsername:
@@ -42,12 +44,14 @@ const AuthReducer = (state, action) => {
             localStorage.setItem('userId', null);
             localStorage.setItem('username', null);
             localStorage.setItem('token', null);
+            localStorage.setItem('userAvatar', null);
 
             return {
                 ...state,
                 userId: "",
                 username: "",
-                token: null
+                token: null,
+                userAvatar: ''
             }
 
         default:
