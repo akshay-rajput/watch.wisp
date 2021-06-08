@@ -20,6 +20,7 @@ export default function Signup() {
         name: "",
         email: '',
         password: '',
+        avatarUrl: '',
         isSubmitting: false,
         errorMessage: null
     }
@@ -31,7 +32,9 @@ export default function Signup() {
 
     async function doSignup(event){
         event.preventDefault();
-        console.log('signup: ', signupData);
+        
+        let avatarImage = `https://avatars.dicebear.com/api/bottts/${signupData.email}.svg`;
+        
         // loading
         setSignupData({
             ...signupData,
@@ -39,26 +42,22 @@ export default function Signup() {
             errorMessage: null
         })
 
+        let formData = {
+            ...signupData,
+            avatarUrl: avatarImage,
+        }
+        // console.log("formData: ", formData);
         // make a request and dispatch
         try{
-            const response = await axios.post("https://watch-wisp.herokuapp.com/users", signupData);
+            const response = await axios.post("https://watch-wisp.herokuapp.com/signup", formData);
             console.log('user response: ', response);
 
             if(response.data.success){
                 let userData = {
                     name: response.data.user.name,
                     id: response.data.user._id,
+                    avatarUrl: response.data.user.avatarUrl
                 }
-    
-                authDispatch({
-                    type: 'LOGIN',
-                    payload: userData
-                })
-    
-                // store in local
-                setUserId(userData.id);
-                setUsername(userData.name);
-                setToken(userData.id);
     
                 // finish loading
                 setSignupData({
@@ -67,7 +66,9 @@ export default function Signup() {
                     errorMessage: null
                 })
     
-                navigate('/');
+                // show toast of successful signup and navigate
+                console.log("signed up : ", userData);
+                navigate('/login');
             }
             else{
                 console.log('response unsuccessful')
@@ -80,13 +81,13 @@ export default function Signup() {
             }
         }
         catch(error){
-            console.log('Error signup: ', error);
+            console.log('Error signup: ', error.response.data);
 
             // finish loading
             setSignupData({
                 ...signupData,
                 isSubmitting: false,
-                errorMessage: error
+                errorMessage: error.response.data.message
             })
         }
 
