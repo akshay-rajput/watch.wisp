@@ -16,8 +16,6 @@ export default function Navbar({isUserLoggedIn, username}) {
         console.log('setting..', showOptions);
         setShowOptions(!showOptions);
     }
-
-
     return (
         <nav className={`${styles.navbar}`}>
             <div className={`${styles.nav_container} displayFlex justifyBetween itemsCenter p3 md:pl4 md:pr4 `}>
@@ -45,8 +43,13 @@ export default function Navbar({isUserLoggedIn, username}) {
                     {
                         isUserLoggedIn && 
                         <div onClick={toggleUserOptions} className={`${styles.user_info} cursorPointer displayFlex itemsCenter textGray2`}>
-                            <div className="avatar-wrapper displayFlex itemsCenter bgGray6 w10 h10 roundedFull p1">
-                                <img src={`https://avatars.dicebear.com/api/bottts/${authState.userId}.svg`} className="roundedFull wFull" />
+                            <div className="avatar-wrapper displayFlex itemsCenter justifyCenter bgGray6 w10 h10 roundedFull p1">
+                                {
+                                    authState.userAvatar ?
+                                    <img src={authState.userAvatar} alt="user" className="roundedFull wFull" />
+                                    :
+                                    <h4>{authState.username.substring(0,1)}</h4> 
+                                }
                             </div>
                             
                             <button className="cursorPointer bgTransparent textRg textGray2 borderNone displayFlex itemsCenter">
