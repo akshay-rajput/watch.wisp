@@ -2,7 +2,7 @@ import React from 'react'
 import {usePlaylists} from '../Store/PlaylistsContext';
 import {useAuth} from '../Store/AuthContext';
 import PlaylistCard from '../Components/Playlists/PlaylistCard';
-
+import {Link} from 'react-router-dom';
 import nodataImage from '../../public/nodata.svg';
 import styles from './Search.module.css';
 
@@ -36,7 +36,7 @@ export default function Playlists() {
                             )
                         })
                         :
-                        <div className="displayFlex flexCol justifyCenter itemsCenter p8">
+                        <div className="md:gridColSpan4 displayFlex flexCol justifyCenter itemsCenter p8">
                             <img src={nodataImage} alt="No data" className={`${styles.nodata} mt4`} />
 
                             <div className="mt6 textCenter">
@@ -48,8 +48,13 @@ export default function Playlists() {
                     
                 </div>
                 :
-                <div className="">
-                    you need to be logged in to view playlists.
+                <div className="textCenter pt8 pb8">
+                    <h3 className="textLg mb2">
+                        Login required
+                    </h3>
+                    <p className="mb8 textSm textGray4">You need to be logged in to view playlists.</p>
+                    <Link to="/login" className="link-button pt2 pb2 pl4 pr4 hover:textBlue5 hover:bgBlue3 mr6 rounded bgBlue5 textWhite">Login</Link>
+                    <Link to="/signup" className="link-button pt2 pb2 pl4 pr4 rounded bgBlue2 textBlue6">Signup</Link>
                 </div>
             }
         </div>
