@@ -2,16 +2,17 @@ import React, {useEffect} from 'react'
 import styles from './NavUserOptions.module.css';
 import {MdExitToApp, MdSettings} from 'react-icons/md';
 import {useAuth} from '../../Store/AuthContext';
-import useLocalStorage from '../../Hooks/useLocalStorage';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 export default function NavUserOptions({setShowOptions}) {
     const {authState, authDispatch} = useAuth();
-    
+    const navigate = useNavigate();
 
     function logOutUser(){
         setShowOptions(false);
         authDispatch({ type: 'LOGOUT'});
+
+        navigate('/login');
     }
 
     return (
