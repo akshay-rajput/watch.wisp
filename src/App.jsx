@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import axios from "axios";
-import useWindowDimensions from "./Hooks/useWindowDimensions";
+// import useWindowDimensions from "./Hooks/useWindowDimensions";
 import {useAuth} from './Store/AuthContext';
 import {usePlaylists} from './Store/PlaylistsContext';
+import { useLocation } from "react-router-dom";
 import AppNavbar from "./Components/common/Navbar";
 import FeatureNavbar from './Components/common/FeatureNavbar';
 
@@ -13,10 +14,15 @@ import ROUTES, {RenderRoutes} from './routes';
 import "./App.css";
 
 function App() {
-
-    // const [videosJson, setvideosJson] = useState([]);
-    const { height, width } = useWindowDimensions();
-
+    const { pathname } = useLocation();
+    // scroll to top on load
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }, [pathname]);
+    
     // authentication
     const {authState, authDispatch} = useAuth();
     const {playlistsState, playlistsDispatch} = usePlaylists();
@@ -37,11 +43,13 @@ function App() {
 
     // user playlists
     useEffect(() => {    
-
-        if(authState.userId){
+        // console.log('===> authstate token Null: ', authState.token === null || authState.token === 'null');
+        if(authState.token){
+            // console.log('token available: ', authState.token.length);
             (async function getUserPlaylists(){
                 try{
                     let response = await axios.get('https://watch-wisp.herokuapp.com/playlists', {
+                    // let response = await axios.get('http://localhost:4000/playlists', {
                         headers: {
                             userId: authState.userId
                         }
@@ -68,14 +76,13 @@ function App() {
                     )
                 }
                 catch(error){
-                    console.log('error gettingUserPlaylsit: ', error);
+                    console.log('error gettingUserPlaylsit: ', error.message);
                 }
             })()            
         }
         else{
+            console.log('reset playlists..');
             playlistsDispatch({type: "RESET_PLAYLISTS"});
-
-            // console.log('user login required to fetch playlists...');
         }
             
     }, [authState.userId]);
@@ -95,16 +102,6 @@ function App() {
                 </div>
 			</div>
 
-            {/* other test code */}
-            <div className="mt7">
-                {/* <span></span> */}
-
-                {/* <div className="">
-						<ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' controls={true} width={width-32} height={width * 0.5625} style={{margin:'auto'}}/>
-					</div> */}
-
-                {/* <span></span> */}
-            </div>
         </div>
     );
 }
