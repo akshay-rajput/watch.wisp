@@ -5,7 +5,7 @@ import styles from './Video.module.css';
 import PlaylistVideoCard from '../Components/Playlists/PlaylistVideoCard';
 import VideoPlayer from '../Components/VideoPlayer';
 import {usePlaylists} from '../Store/PlaylistsContext';
-
+import Skeleton from 'react-loading-skeleton';
 import {
     getVideos,
     hindiVideos,
@@ -19,6 +19,9 @@ export default function Video() {
     const {videoId} = useParams();
     const [videoData, setVideoData] = useState({});
     const [similarVideos, setSimilarVideos] = useState([]);
+
+    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [similarVideosLoaded, setSimilarVideosLoaded] = useState(false);
 
     useEffect(() => {
         if(videoId){
@@ -44,6 +47,8 @@ export default function Video() {
             
             setVideoData(response.data.video);
             
+            setVideoLoaded(true);
+
             await findSimilarVideos(categoryOfVideo);
 
         }
@@ -109,21 +114,39 @@ export default function Video() {
         })
         
         setSimilarVideos(similarvids)
+
+        setSimilarVideosLoaded(true);
     }
 
     return (
         <div className={`displayGrid gridCols12`}>
             <div className={`${styles.video_container} md:pr12`}>
-                <VideoPlayer video={videoData} />
+                {
+                    videoLoaded ? 
+                    <VideoPlayer video={videoData} />
+                    :
+                    <Skeleton style={{ width: '100%', height: "500px", }}/>
+                }
             </div>
             <div className={`${styles.video_others} mb12`}>
-                <h4 className="textGray4 fontSemiBold mb4">Similar videos</h4>
                 {
-                    similarVideos.map((similarVideo, index) => {
+                    similarVideosLoaded ?
+                    <div>
+                        <h4 className="textGray4 fontSemiBold mb4">Similar videos</h4>
+                        {
+                            similarVideos.map((similarVideo, index) => {
+                                return(
+                                    <div className="mb4" key={similarVideo._id}>
+                                        <PlaylistVideoCard video={similarVideo} />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    :
+                    [...Array(6)].map((child, index) => {
                         return(
-                            <div className="mb4" key={similarVideo._id}>
-                                <PlaylistVideoCard video={similarVideo} />
-                            </div>
+                            <Skeleton key={index} style={{ width: '100%', height: "200px", }}/>
                         )
                     })
                 }
