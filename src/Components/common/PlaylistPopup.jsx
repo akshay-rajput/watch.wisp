@@ -11,7 +11,6 @@ import {ImSpinner10} from 'react-icons/im';
 import { toast } from 'react-toastify';
 
 export default function PlaylistPopup({isOpen, closePopup, videoData}) {
-    const [showToast, setShowToast] = useState(false);
     const [customPlaylistName, setCustomPlaylistName] = useState("");
     const {authState, authDispatch} = useAuth();
 
@@ -207,7 +206,9 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                         <form onSubmit={createPlaylist} className="displayFlex flexCol">
                             <div className={`${styles.list_of_playlists}`}>
                                 {
-                                    playlistsState.playlists.map(playlist => {
+                                    playlistsState.playlists
+                                    .filter(playlist => playlist.name !== "Saved Videos")
+                                    .map(playlist => {
                                         return(
                                             <label key={playlist._id} className="mb2 displayBlock">
                                                 <input type="checkbox" checked={checkExistanceInArray(playlist.videos, videoData._id)} 
@@ -222,8 +223,7 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                                 {
                                     updatingPlaylist &&
                                     <div className={`${styles.playlist_updating}`}>
-                                        <ImSpinner10 className="loadingIcon"/> 
-                                        <br />
+                                        <ImSpinner10 className="loadingIcon mr2"/> 
                                         Updating playlist..
                                     </div>
                                 } 
