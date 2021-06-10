@@ -46,7 +46,8 @@
 @media (max-width: 767px) {
     .result_card_title{
         /* two line for title */
-        height: 2.6rem;
+        height: 2.5rem;
+        
         word-break: break-word;
         overflow: hidden;
         position: relative;
@@ -60,7 +61,7 @@
         /* width: 1.5rem; */
         height: 1rem;
         width: 2rem;
-        background:  linear-gradient(90deg, rgba(235,245,255,0.25) 0%, rgba(235,245,255,0.5) 33%, rgb(235, 245, 255, 0.77) 60%, rgb(235, 245, 255, 0.9) 90%);
+        background:  linear-gradient(90deg, rgba(252,252,252,0.25) 0%, rgba(252,252,252,0.5) 33%, rgb(252,252,252, 0.77) 60%, rgb(252,252,252, 0.9) 90%);
     }
         
 }
