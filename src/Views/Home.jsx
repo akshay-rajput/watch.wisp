@@ -7,13 +7,12 @@ import {
     vocabularyVideos,
     pronunciationVideos
 } from '../getVideos';
-
 import {usePlaylists} from '../Store/PlaylistsContext';
 
 
 export default function Home() {
     const {playlistsState, playlistsDispatch} = usePlaylists();
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         // make request only if playlist is empty in state
         if(playlistsState.vocabularyVideoList.length < 1){
@@ -31,11 +30,16 @@ export default function Home() {
                             }
                         }
                     )
+
+                    setLoading(false);
                 }
                 catch(error){
                     console.log('Home - Error getting videos:', error)
                 }
             })()
+        }
+        else{
+            setLoading(false);
         }
 
     }, []);
@@ -43,9 +47,9 @@ export default function Home() {
     return (
         <div>
             <div className="">
-                <HomeVideoSlider videoList = {playlistsState.vocabularyVideoList} title = {'Vocabulary'} />
-                <HomeVideoSlider videoList = {playlistsState.pronunciationVideoList} title = {'Pronunciation'} />
-                <HomeVideoSlider videoList = {playlistsState.hindiVideoList} title = {'English through Hindi'} />
+                <HomeVideoSlider loading={loading} videoList = {playlistsState.vocabularyVideoList} title = {'Vocabulary'} />
+                <HomeVideoSlider loading={loading} videoList = {playlistsState.pronunciationVideoList} title = {'Pronunciation'} />
+                <HomeVideoSlider loading={loading} videoList = {playlistsState.hindiVideoList} title = {'English through Hindi'} />
             </div>
         </div>
     )
