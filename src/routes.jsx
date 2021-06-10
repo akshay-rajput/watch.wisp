@@ -15,6 +15,8 @@ import Search from "./Views/Search";
 import Login from "./Views/Login";
 import Signup from "./Views/Signup";
 import Profile from "./Views/Profile";
+import About from "./Views/About";
+import Acknowledgements from "./Views/Acknowledgements";
 import PageNotFound from './Views/PageNotFound';
 
 import {useRoutes} from 'react-router-dom';
@@ -34,12 +36,6 @@ const ROUTES = [
     },
     
     // playlist routes - order matters
-    // {   path: '/playlists/likedVideos',
-    //     key: "likedVideos",
-    //     end: true,
-    //     exact: true,
-    //     element: <LikedVideos />
-    // },
     {   path: '/playlists/savedVideos',
         key: "savedVideos",
         end: true,
@@ -99,6 +95,16 @@ const ROUTES = [
         path: "/profile",
         key: "Profile",
         element: <Profile/>, 
+    },
+    {
+        path: "/about",
+        key: "About",
+        element: <About/>, 
+    },
+    {
+        path: "/acknowledgements",
+        key: "Acknowledgements",
+        element: <Acknowledgements/>, 
     },
     {
         path: "*",
