@@ -81,7 +81,7 @@ export default function UserPlaylist() {
     }
 
     return (
-        <div>
+        <div className="mb24">
         {   
             !authState.token ?
             <>

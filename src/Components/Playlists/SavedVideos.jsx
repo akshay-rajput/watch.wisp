@@ -57,7 +57,7 @@ export default function SavedVideos() {
     }
 
     return (
-        <div>
+        <div className="mb24">
             {
                 authState.token && savedVideoList ?
                 <>
