@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import {Link} from 'react-router-dom';
 
 export default function Acknowledgements() {
     const libraries = [
@@ -81,6 +82,9 @@ export default function Acknowledgements() {
                     })
                 }
             </ul>
+
+            Toaster Illustration on <Link to="/pagenotfound" className="textBlue5 hover:textBlue6">Page not found</Link> is from 
+            <a href="https://www.kapwing.com/404-illustrations" className="textTeal4 hover:textTeal5 ml1" rel="noopener noreferrer" target="_blank">404 illustrations.</a>
         </div>
     )
 }
