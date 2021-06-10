@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import styles from './Navbar.module.css';
 import {NavLink} from 'react-router-dom';
-import {MdExpandMore, MdExpandLess, MdSearch} from 'react-icons/md'
+import {MdExpandMore, MdExpandLess} from 'react-icons/md';
+import {GiMoebiusStar} from 'react-icons/gi';
+
 import NavUserOptions from './NavUserOptions';
 
 import {useAuth} from '../../Store/AuthContext';
-
-import wisplogo from '../../../wisp.png';
 
 export default function Navbar({isUserLoggedIn, username}) {
     const [showOptions, setShowOptions] = useState(false);
@@ -19,12 +19,9 @@ export default function Navbar({isUserLoggedIn, username}) {
     return (
         <nav className={`${styles.navbar}`}>
             <div className={`${styles.nav_container} displayFlex justifyBetween itemsCenter p3 md:pl4 md:pr4 `}>
-                {/* <a href="#" className={`${styles.nav_brand} logofont displayFlex itemsCenter`}>
-                    <img src={wisplogo} alt="Wisp" className="h8 mr2"/>
-                    Wisp
-                </a> */}
+                
                 <NavLink to="/" className={`${styles.nav_brand} logofont displayFlex itemsCenter`}>
-                    <img src={wisplogo} alt="Wisp" className="h8 mr2"/>
+                    <GiMoebiusStar />
                     Wisp
                 </NavLink>
 
