@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styles from './Search.module.css';
 import {MdSearch} from 'react-icons/md';
-import {ImSpinner9} from 'react-icons/im';
+import {ImSpinner10} from 'react-icons/im';
 import nodataImage from '../../public/nodata.svg';
 import axios from 'axios';
 import SearchResultCard from '../Components/SearchResultCard';
@@ -111,12 +111,12 @@ export default function Search() {
                     Search
                     <input type="search" name="q" id="search_query" 
                             onChange={handleInput} value={searchQuery}
-                            placeholder="Search video" className={`${styles.search_input} p2 textMd md:textLg rounded border borderGray3 mt1`}/>
+                            placeholder="Search video" className={`${styles.search_input} p2 textMd md:textLg rounded border borderGray3 mt1`} required/>
                 </label>
 
-                <button className=" pt2 pb1 pl2 pr2 bgBlue2 textMd md:textLg rounded borderNone" title="Search">
+                <button className=" pt2 pb1 pl2 pr2 bgBlue2 textMd md:textLg rounded borderNone" disabled={searchState.loading} title="Search">
                     {   searchState.loading ?
-                        <ImSpinner9 className={`${styles.loadingIcon} mt1`} /> :
+                        <ImSpinner10 className={`${styles.loadingIcon} mt1`} /> :
                         <MdSearch className={"mt1"} />
                     }
                 </button>
