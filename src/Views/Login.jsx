@@ -131,8 +131,8 @@ export default function Login() {
                 </div>
 
                 <div className="p4 mt8">
-                    <button className="displayBlock wFull p3 textRg bgBlue4 textWhite borderNone rounded">
-                        { loginData.isSubmitting? 'loading..':'Login'}
+                    <button className="displayBlock wFull p3 textRg bgBlue4 textWhite borderNone rounded" disabled={loginData.isSubmitting}>
+                        { loginData.isSubmitting? 'Please wait..':'Login'}
                     </button>
 
                     <p className="mt8 textCenter textGray4">

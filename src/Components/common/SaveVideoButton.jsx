@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { MdBookmark, MdBookmarkBorder} from 'react-icons/md';
 import {checkExistanceInArray} from '../../utils';
 import styles from '../HomeVideoCard.module.css';
@@ -6,15 +6,22 @@ import styles from '../HomeVideoCard.module.css';
 import axios from 'axios';
 import {usePlaylists} from '../../Store/PlaylistsContext';
 import {useAuth} from '../../Store/AuthContext';
+import {ImSpinner8} from 'react-icons/im';
+
 
 export default function SaveVideoButton({video, extendedButton}) {
     const {authState, authDispatch} = useAuth();
     // get all playlist names from context
     const {playlistsState, playlistsDispatch} = usePlaylists();
 
+    const [updatingPlaylist, setUpdatingPlaylist] = useState(false);
+
     // add to saved videos or remove
     async function toggleSaveVideo(playlistName){
         console.log('toggle playlist: ',playlistName)
+        
+        setUpdatingPlaylist(true);
+
         if(authState.userId){
             
             let playlistToUpdate = {...playlistsState.savedVideos};
@@ -43,9 +50,12 @@ export default function SaveVideoButton({video, extendedButton}) {
                             createSavedVideoPlaylist: true
                         }
                     })
+
+                    setUpdatingPlaylist(false);
                 }
                 catch(error){
                     console.log('Error creating playlist: ', error);
+                    setUpdatingPlaylist(false);
                 }
             }
             else{
@@ -75,67 +85,90 @@ export default function SaveVideoButton({video, extendedButton}) {
                                 playlistName: playlistName
                             }
                         })
+
+                        setUpdatingPlaylist(false);
                     }
                     catch(error){
                         console.log('Error: adding to playlist - ', error);
+                        setUpdatingPlaylist(false);
                     }
                     
-                }else{
+                }
+                else{
                     // console.log('removing from ', playlistName);
+                    try{
+                            
+                        let indexOfVideoToRemove = playlistToUpdate.videos.findIndex(singleVideo => singleVideo._id === video._id)
 
-                    console.log("before: ", playlistToUpdate.videos.length);
+                        // console.log("index of vid: ", indexOfVideoToRemove);
 
-                    let indexOfVideoToRemove = playlistToUpdate.videos.findIndex(singleVideo => singleVideo._id === video._id)
+                        playlistToUpdate.videos.splice(indexOfVideoToRemove, 1);
 
-                    // console.log("index of vid: ", indexOfVideoToRemove);
+                        console.log('spliced: ', playlistToUpdate.videos);
 
-                    playlistToUpdate.videos.splice(indexOfVideoToRemove, 1);
+                        const response = await axios.post('https://watch-wisp.herokuapp.com/playlists', playlistToUpdate, {
+                        // const response = await axios.post('http://localhost:4000/playlists', playlistToUpdate, {
+                                headers: {
+                                playlistid: playlistToUpdate._id
+                            }
+                        })
 
-                    console.log('spliced: ', playlistToUpdate.videos);
+                        console.log("resp of removeFromPlaylist - ", response);
 
-                    const response = await axios.post('https://watch-wisp.herokuapp.com/playlists', playlistToUpdate, {
-                    // const response = await axios.post('http://localhost:4000/playlists', playlistToUpdate, {
-                            headers: {
-                            playlistid: playlistToUpdate._id
-                        }
-                    })
+                        playlistsDispatch({
+                            type: 'REMOVE_FROM_SAVEDVIDEOS',
+                            payload: {
+                                video: video,
+                                playlistName: playlistName
+                            }
+                        })
 
-                    console.log("resp of removeFromPlaylist - ", response);
-
-                    playlistsDispatch({
-                        type: 'REMOVE_FROM_SAVEDVIDEOS',
-                        payload: {
-                            video: video,
-                            playlistName: playlistName
-                        }
-                    })
+                        setUpdatingPlaylist(false);
+                    }
+                    catch(error){
+                        console.log('error: ', error.message);
+                        setUpdatingPlaylist(false);
+                    }
                 }
             }
             
         }
         else{
             console.log("cannot change playlist without login..");
+            setUpdatingPlaylist(false);
         }
     }
 
     return (
-        <button onClick={() => toggleSaveVideo("Saved Videos")} className={`${styles.video_card_button} mr2`} title={'Add to saved videos'}>
+        <button onClick={() => toggleSaveVideo("Saved Videos")} className={`${styles.video_card_button} mr2`} disabled={updatingPlaylist} title={'Add to saved videos'}>
             {
-                playlistsState.savedVideos?.videos?.length > 0 && checkExistanceInArray(playlistsState.savedVideos.videos, video._id) ? 
-                <span className="displayFlex itemsCenter">
-                    <MdBookmark className="textBlue4"/>
+                !updatingPlaylist ?
+                <div>
                     {
-                        extendedButton === true ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Saved</span> : ""
+                        playlistsState.savedVideos?.videos?.length > 0 && checkExistanceInArray(playlistsState.savedVideos.videos, video._id) ? 
+                        <span className="displayFlex itemsCenter">
+                            <MdBookmark className="textBlue4"/>
+                            {
+                                extendedButton === true ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Saved</span> : ""
+                            }
+                        </span> 
+                        : 
+                        <span className="displayFlex itemsCenter">
+                            <MdBookmarkBorder className="textBlue4" />
+                            {
+                                !extendedButton === false ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Save</span>: ""
+                            }
+                        </span>
+                        
                     }
-                </span> 
-                : 
+                </div>
+                :
                 <span className="displayFlex itemsCenter">
-                    <MdBookmarkBorder className="textBlue4" />
+                    <ImSpinner8 className="loadingIcon textBlue4"/>
                     {
-                        !extendedButton === false ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Save</span>: ""
+                        !extendedButton === false ? <span className="textRg textBlue5 pt2 pb2 pl1 pr1"> Please wait</span>: ""
                     }
                 </span>
-                
             }
             
         </button>

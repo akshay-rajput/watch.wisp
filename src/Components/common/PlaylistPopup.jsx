@@ -6,13 +6,18 @@ import {Link} from 'react-router-dom';
 import {usePlaylists} from '../../Store/PlaylistsContext';
 import {useAuth} from '../../Store/AuthContext';
 import {checkExistanceInArray, truncateText} from '../../utils';
+import {ImSpinner10} from 'react-icons/im';
 
 export default function PlaylistPopup({isOpen, closePopup, videoData}) {
     const [showToast, setShowToast] = useState(false);
     const [customPlaylistName, setCustomPlaylistName] = useState("");
     const {authState, authDispatch} = useAuth();
+
     // get all playlist names from context
     const {playlistsState, playlistsDispatch} = usePlaylists();
+
+    const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
+    const [updatingPlaylist, setUpdatingPlaylist] = useState(false);
 
     useEffect(() => {
         console.log("playlist state change..", playlistsState);
@@ -20,6 +25,8 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
 
     // general action of adding to playlist
     async function toggleAddToPlaylist(event){
+        setUpdatingPlaylist(true);
+
         if(authState.userId){
             
             let playlistToUpdate = {};
@@ -55,9 +62,12 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                             playlistName: event.target.name
                         }
                     })
+
+                    setUpdatingPlaylist(false);
                 }
                 catch(error){
                     console.log('Error: adding to playlist - ', error);
+                    setUpdatingPlaylist(false);
                 }
                 
             }else{
@@ -89,19 +99,27 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                         playlistName: event.target.name
                     }
                 })
+
+                setUpdatingPlaylist(false);
+
             }
         }
         else{
             console.log("cannot change playlist without login..");
+            setUpdatingPlaylist(false);
         }
     }
 
     // create new playlist
     async function createPlaylist(event){
         event.preventDefault();
+
+        // loading
+        setIsCreatingPlaylist(true);
         
         if(authState.userId){
             try{
+
                 let playlistData = {
                     name: customPlaylistName,
                     userId: authState.userId,
@@ -122,14 +140,19 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                         playlist: response.data.playlist
                     }
                 })
+
+                setIsCreatingPlaylist(false);
             }
             catch(error){
                 console.log('Error creating playlist: ', error);
+                setIsCreatingPlaylist(false);
             }
     
         }
         else{
-            console.log('cannot create playlist without logging in')
+            console.log('cannot create playlist without logging in');
+            setIsCreatingPlaylist(false);
+
         }
     }
 
@@ -147,28 +170,43 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                     authState.token ?
                     <div>
                         <h4 className="textMd fontNormal">Add to Playlist</h4>
-                        <small className="mt1 mb4">
+                        <small className="mt1 mb4 displayBlock">
                             Selected video:
                             <span className="textGray4 fontSemiBold"> {truncateText(videoData.snippet.name, 30)}</span>
                         </small> 
                         <form onSubmit={createPlaylist} className="displayFlex flexCol">
-                            <div className="mb4">
+                            <div className={`${styles.list_of_playlists}`}>
                                 {
                                     playlistsState.playlists.map(playlist => {
-                                        console.log('exists: ', playlist.videos.length)
                                         return(
                                             <label key={playlist._id} className="mb2 displayBlock">
                                                 <input type="checkbox" checked={checkExistanceInArray(playlist.videos, videoData._id)} 
-                                                        name={playlist.name} onChange={toggleAddToPlaylist} /> {playlist.name}
+                                                    name={playlist.name} onChange={toggleAddToPlaylist} />
+                                                <span className="pl2">{playlist.name}</span>
                                             </label>
                                         )
                                     })
                                 }
+
+                                {/* overlay when updating playlist */}
+                                {
+                                    updatingPlaylist &&
+                                    <div className={`${styles.playlist_updating}`}>
+                                        <ImSpinner10 className="loadingIcon"/> 
+                                        <br />
+                                        Updating playlist..
+                                    </div>
+                                } 
                             </div>
                             
                             <input type="text" value={customPlaylistName} onChange={handleInputChange}
-                                    placeholder="Enter playlist name" className="mb2 textRg p2 rounded border borderGray4" />
-                            <button className="p2 rounded borderNone bgBlue5 hover:bgBlue4 textWhite">Create Playlist</button>
+                                    placeholder="Enter playlist name" className="mb2 mt4 textRg p2 rounded border borderGray4" required />
+                            <button className="p2 rounded borderNone bgBlue5 hover:bgBlue4 textWhite" disabled={isCreatingPlaylist}>
+                                {
+                                    isCreatingPlaylist?
+                                    "Please wait": "Create Playlist"
+                                }
+                            </button>
                         </form>
                     </div>
                     :
@@ -181,12 +219,6 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                         <Link to="/signup" className="link-button pt2 pb2 pl4 pr4 rounded bgBlue2 textBlue6">Signup</Link>
                         
                     </div>
-                }
-
-                {   showToast &&
-                    <p className="p2 rounded bgGreen2 textGreen6 mt4" >
-                        Successfully added to {"playlist"}!
-                    </p>
                 }
 
                 <button type="button" className={`${styles.btn_close}`} onClick={closePopup}>

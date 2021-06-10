@@ -132,28 +132,14 @@ export default function Signup() {
                     </div>
                 </div>
 
-                {/* <div className={"displayFlex flexCol pl4 pr4 mb4"}>
-                    <label htmlFor="user_password" className="textSm textGray4 mb1">Confirm Password</label>
-                    <div className="" style={{position: 'relative'}}>
-                        <input type={showConfirmPassword ? "text" : "password"} id="user_password" name='password' ref={confirm_password}  onChange={handleInputChange}
-                                placeholder="Enter Password" className={styles.form_input + " wFull"} minLength='6' required/>
-
-                        <span onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={styles.password_visibility_toggler + " cursorPointer displayBlock textGray4"}>
-                            {
-                                showConfirmPassword ? <MdVisibility /> : <MdVisibilityOff /> 
-                            }
-                        </span>
-                    </div>
-                </div> */}
-
                 <div className="p4 mt8">
-                    <button className="displayBlock wFull p3 textRg bgBlue4 textWhite borderNone rounded">
-                        { signupData.isSubmitting? 'loading..':'Sign up'}
+                    <button className="displayBlock wFull p3 textRg bgBlue4 textWhite borderNone rounded" disabled={signupData.isSubmitting}>
+                        { signupData.isSubmitting? 'Please wait..':'Sign up'}
                     </button>
 
                     <p className="mt8 textCenter textGray4">
                         Already a member? 
-                        <Link to="/signup" className="ml1 textBlue4">
+                        <Link to="/login" className="ml1 textBlue4">
                             Login
                         </Link>
                     </p>
