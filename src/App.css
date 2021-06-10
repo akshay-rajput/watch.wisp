@@ -4,6 +4,8 @@
     --secondary: #c2e0ff;
     --light: #ebf5ff;
     --gray: #6f8296;
+    --gray-light: #fcfcfc;
+    --gray-mid: #dcdcdc;
     --dark: #172933;
     
 }
@@ -25,6 +27,9 @@ a:hover{
     color: var(--dark);
     text-decoration: underline;
 }
+a.link-button:hover{
+    text-decoration: none;
+}
 
 input:focus, textarea:focus, select:focus{
     outline-color: var(--primary);
@@ -44,6 +49,30 @@ input:focus, textarea:focus, select:focus{
     padding-top: 1rem;
     padding-bottom: 3rem;
 }
+
+.loadingIcon{
+    animation: rotating 2s linear infinite;
+}
+@keyframes rotating {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+/* mobile only */
+@media (max-width: 480px) {
+    .Toastify__toast-container {
+        width: 90%;
+    }
+    .Toastify__toast-container--bottom-right {
+        bottom: 4rem;
+        right: 1rem;
+    }
+}
+
 /* tablet and up */
 @media (min-width: 768px) {
     .app-main{

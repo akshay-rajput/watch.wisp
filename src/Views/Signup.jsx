@@ -7,6 +7,8 @@ import useLocalStorage from '../Hooks/useLocalStorage';
 import {useAuth} from '../Store/AuthContext';
 import axios from 'axios';
 
+import { toast } from 'react-toastify';
+
 export default function Signup() {
     const {authState, authDispatch} = useAuth();
     
@@ -68,6 +70,11 @@ export default function Signup() {
     
                 // show toast of successful signup and navigate
                 console.log("signed up : ", userData);
+
+                toast.success(`Signed up successfully`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+
                 navigate('/login');
             }
             else{
@@ -78,6 +85,10 @@ export default function Signup() {
                     isSubmitting: false,
                     errorMessage: response.data.message
                 })
+
+                toast.error(`Error: ${response.data.message}`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
         }
         catch(error){
@@ -89,6 +100,10 @@ export default function Signup() {
                 isSubmitting: false,
                 errorMessage: error.response.data.message
             })
+
+            toast.error(`Error: ${error.response.data.message}`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
         }
 
     }
@@ -147,13 +162,6 @@ export default function Signup() {
 
             </form>
 
-            
-            {
-                signupData.errorMessage && 
-                <p className="m4 p2 textCenter rounded bgRed2 textRed5">
-                    There was an error during signup.
-                </p>
-            }
         </div>
     )
 }

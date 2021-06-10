@@ -5,10 +5,14 @@ import {usePlaylists} from '../../Store/PlaylistsContext';
 import {MdEdit, MdSave, MdDeleteForever, MdChevronRight} from 'react-icons/md';
 import styles from './PlaylistCard.module.css';
 
+import {toast} from 'react-toastify';
+
 export default function PlaylistCard({playlistData}) {
     const isEditable = playlistData.name.toLowerCase() !== "saved videos"
 
     const [editingPlaylist, setEditingPlaylist] = useState(false);
+    const [deletingPlaylist, setDeletingPlaylist] = useState(false);
+
     const [playlistUpdateOn, setPlaylistUpdateOn] = useState('')
 
     const [playlistName, setPlaylistName] = useState("")
@@ -61,16 +65,25 @@ export default function PlaylistCard({playlistData}) {
                 }
             })
          
+            toast.info(`Playlist updated successfully.`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+
             // toggle back
             toggleEditPlaylist();
         }
         catch(error){
             console.log('error saving playlist..', error);
+            toast.error(`There was a problem while saving this playlist.`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
         }
 
     }
 
     async function deletePlaylistClicked(){
+        setDeletingPlaylist(true);
+
         try{
             console.log("deleting > ", playlistData._id);
             const response = await axios.delete('https://watch-wisp.herokuapp.com/playlists', {
@@ -90,13 +103,29 @@ export default function PlaylistCard({playlistData}) {
                         playlistName: playlistName
                     }
                 })
+
+                setDeletingPlaylist(false);
+
+                toast.info(`Playlist deleted`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
             else{
+                setDeletingPlaylist(false);
+                
                 console.log('Problem deleting the playlist..', response.data);
+                toast.error(`There was a problem while deleting this playlist.`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
         }
         catch(error){
+            setDeletingPlaylist(false);
+            
             console.log('Error deleting: ', error);
+            toast.error(`There was a problem while deleting this playlist.`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
         }
     }
 
@@ -150,7 +179,7 @@ export default function PlaylistCard({playlistData}) {
                             </button>
                         }
                         
-                        <button onClick={deletePlaylistClicked} className={`gridColSpan1 displayFlex itemsCenter p1 mt2 bgTransparent borderNone textRed4 hover:bgRed1 hover:textRed6 rounded`}>
+                        <button onClick={deletePlaylistClicked} disabled={deletingPlaylist} className={`gridColSpan1 displayFlex itemsCenter p1 mt2 bgTransparent borderNone textRed4 hover:bgRed1 hover:textRed6 rounded`}>
                             <MdDeleteForever className="textMd"/>
                         </button>
                     </div>

@@ -8,6 +8,8 @@ import {useAuth} from '../../Store/AuthContext';
 import {checkExistanceInArray, truncateText} from '../../utils';
 import {ImSpinner10} from 'react-icons/im';
 
+import { toast } from 'react-toastify';
+
 export default function PlaylistPopup({isOpen, closePopup, videoData}) {
     const [showToast, setShowToast] = useState(false);
     const [customPlaylistName, setCustomPlaylistName] = useState("");
@@ -63,49 +65,69 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                         }
                     })
 
+                    toast.info(`Added to playlist`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+
                     setUpdatingPlaylist(false);
                 }
                 catch(error){
                     console.log('Error: adding to playlist - ', error);
+                    toast.error(`Couldn't add video to playlist.`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
                     setUpdatingPlaylist(false);
                 }
                 
             }else{
-                console.log('removing from ', event.target.name);
+                try{
+                    console.log('removing from ', event.target.name);
 
-                console.log("before: ", playlistToUpdate.videos.length);
+                    console.log("before: ", playlistToUpdate.videos.length);
 
-                let indexOfVideoToRemove = playlistToUpdate.videos.findIndex(video => video._id === videoData._id)
+                    let indexOfVideoToRemove = playlistToUpdate.videos.findIndex(video => video._id === videoData._id)
 
-                console.log("index of vid: ", indexOfVideoToRemove);
+                    console.log("index of vid: ", indexOfVideoToRemove);
 
-                playlistToUpdate.videos.splice(indexOfVideoToRemove, 1);
+                    playlistToUpdate.videos.splice(indexOfVideoToRemove, 1);
 
-                console.log('updated pl: ', playlistToUpdate.videos);
+                    console.log('updated pl: ', playlistToUpdate.videos);
 
-                const response = await axios.post('https://watch-wisp.herokuapp.com/playlists', playlistToUpdate, {
-                // const response = await axios.post('http://localhost:4000/playlists', playlistToUpdate, {
-                        headers: {
-                        playlistid: playlistToUpdate._id
-                    }
-                })
+                    const response = await axios.post('https://watch-wisp.herokuapp.com/playlists', playlistToUpdate, {
+                    // const response = await axios.post('http://localhost:4000/playlists', playlistToUpdate, {
+                            headers: {
+                            playlistid: playlistToUpdate._id
+                        }
+                    })
 
-                console.log("resp of removeFromPlaylist - ", response);
+                    console.log("resp of removeFromPlaylist - ", response);
 
-                playlistsDispatch({
-                    type: 'REMOVE_FROM_PLAYLIST',
-                    payload: {
-                        video: videoData,
-                        playlistName: event.target.name
-                    }
-                })
+                    playlistsDispatch({
+                        type: 'REMOVE_FROM_PLAYLIST',
+                        payload: {
+                            video: videoData,
+                            playlistName: event.target.name
+                        }
+                    })
 
-                setUpdatingPlaylist(false);
+                    toast.info(`Removed from playlist`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
 
+                    setUpdatingPlaylist(false);
+                }
+                catch(error){
+                    console.log('Error removing video: ', error)
+                    toast.error(`There was a problem when trying to remove this video.`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                }
             }
         }
         else{
-            console.log("cannot change playlist without login..");
+            toast.error(`You need to login to update the playlist.`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
             setUpdatingPlaylist(false);
         }
     }
@@ -140,17 +162,25 @@ export default function PlaylistPopup({isOpen, closePopup, videoData}) {
                         playlist: response.data.playlist
                     }
                 })
-
+                toast.success(`Playlist created.`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
                 setIsCreatingPlaylist(false);
             }
             catch(error){
                 console.log('Error creating playlist: ', error);
+                toast.error(`There was an error while creating the playlist.`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
                 setIsCreatingPlaylist(false);
             }
     
         }
         else{
             console.log('cannot create playlist without logging in');
+            toast.error(`You need to login to create a playlist.`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
             setIsCreatingPlaylist(false);
 
         }

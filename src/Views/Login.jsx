@@ -7,6 +7,8 @@ import axios from 'axios';
 import useLocalStorage from '../Hooks/useLocalStorage';
 import {useAuth} from '../Store/AuthContext';
 
+import { toast } from 'react-toastify';
+
 export default function Login() {
     const {authState, authDispatch} = useAuth();
     
@@ -79,8 +81,12 @@ export default function Login() {
                 setLoginData({
                     ...loginData,
                     isSubmitting: false,
-                    errorMessage: response.message
+                    errorMessage: response.data.message
                 })
+                
+                toast.error(`Error: ${response.data.message}`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
 
         }
@@ -93,6 +99,10 @@ export default function Login() {
                 isSubmitting: false,
                 errorMessage: error.response.data.message
             })
+
+            toast.error(`Error: ${error.response.data.message}`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
         }
 
     }

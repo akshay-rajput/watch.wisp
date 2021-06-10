@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import ReactPlayer from "react-player/youtube";
 import axios from "axios";
 // import useWindowDimensions from "./Hooks/useWindowDimensions";
 import {useAuth} from './Store/AuthContext';
@@ -7,6 +6,9 @@ import {usePlaylists} from './Store/PlaylistsContext';
 import { useLocation } from "react-router-dom";
 import AppNavbar from "./Components/common/Navbar";
 import FeatureNavbar from './Components/common/FeatureNavbar';
+
+import { ToastContainer, Slide} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 // render routes
 import ROUTES, {RenderRoutes} from './routes';
@@ -102,6 +104,7 @@ function App() {
                 </div>
 			</div>
 
+            <ToastContainer pauseOnHover={false} autoClose={3000} transition={Slide}/>
         </div>
     );
 }

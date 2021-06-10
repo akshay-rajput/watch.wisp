@@ -8,6 +8,7 @@ import {usePlaylists} from '../../Store/PlaylistsContext';
 import {useAuth} from '../../Store/AuthContext';
 import {ImSpinner8} from 'react-icons/im';
 
+import { toast } from 'react-toastify';
 
 export default function SaveVideoButton({video, extendedButton}) {
     const {authState, authDispatch} = useAuth();
@@ -51,10 +52,16 @@ export default function SaveVideoButton({video, extendedButton}) {
                         }
                     })
 
+                    toast.success(`Created Saved Videos playlist`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
                     setUpdatingPlaylist(false);
                 }
                 catch(error){
                     console.log('Error creating playlist: ', error);
+                    toast.error(`There was a problem when trying to save this video.`, {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
                     setUpdatingPlaylist(false);
                 }
             }
@@ -86,10 +93,17 @@ export default function SaveVideoButton({video, extendedButton}) {
                             }
                         })
 
+                        toast.info(`Added to saved videos.`, {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+
                         setUpdatingPlaylist(false);
                     }
                     catch(error){
-                        console.log('Error: adding to playlist - ', error);
+                        console.log('Error: adding to playlist - ', error.response.data);
+                        toast.error(`Encountered a problem while saving this video.`, {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
                         setUpdatingPlaylist(false);
                     }
                     
@@ -123,10 +137,17 @@ export default function SaveVideoButton({video, extendedButton}) {
                             }
                         })
 
+                        toast.info(`Video removed from playlist`, {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
+
                         setUpdatingPlaylist(false);
                     }
                     catch(error){
-                        console.log('error: ', error.message);
+                        console.log('error: ', error.response.data);
+                        toast.error(`Problem while removing video from saved videos.`, {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
                         setUpdatingPlaylist(false);
                     }
                 }
@@ -135,6 +156,9 @@ export default function SaveVideoButton({video, extendedButton}) {
         }
         else{
             console.log("cannot change playlist without login..");
+            toast.error(`You need to login to save this video`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
             setUpdatingPlaylist(false);
         }
     }
