@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import styles from './NavUserOptions.module.css';
-import {MdExitToApp, MdPerson, MdInfoOutline} from 'react-icons/md';
+import {MdExitToApp, MdPerson, MdInfoOutline, MdBugReport} from 'react-icons/md';
 import {useAuth} from '../../Store/AuthContext';
 import {Link, useNavigate} from 'react-router-dom';
 
@@ -24,6 +24,9 @@ export default function NavUserOptions({setShowOptions}) {
             <Link to="/about" onClick={() => setShowOptions(false)} className={`${styles.user_options} displayFlex itemsCenter p2 `}>
                 <MdInfoOutline className="mr1 " />
                 About
+            </Link>
+            <Link to="/bugreport" onClick={() => setShowOptions(false)} className={`${styles.user_options} displayFlex itemsCenter p2 `}>
+                <MdBugReport className="mr1" /> Bug Report
             </Link>
             <hr className=" borderGray4 mt1 mb1"/>
             <button onClick={logOutUser} className={`${styles.user_options} displayFlex itemsCenter p2`}>
