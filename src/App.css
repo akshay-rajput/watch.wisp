@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, .logofont{
 }
 
 a{
-    color: var(--primary);
+    color: var(--primary-dark);
     transition: color ease 0.35s;
 }
 a:hover{
