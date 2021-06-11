@@ -16,6 +16,7 @@ import Login from "./Views/Login";
 import Signup from "./Views/Signup";
 import Profile from "./Views/Profile";
 import About from "./Views/About";
+import BugReport from './Views/BugReport';
 import Acknowledgements from "./Views/Acknowledgements";
 import PageNotFound from './Views/PageNotFound';
 
@@ -105,6 +106,11 @@ const ROUTES = [
         path: "/acknowledgements",
         key: "Acknowledgements",
         element: <Acknowledgements/>, 
+    },
+    {
+        path: "/bugreport",
+        key: "BugReport",
+        element: <BugReport/>, 
     },
     {
         path: "*",
