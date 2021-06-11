@@ -4,6 +4,7 @@ import {useAuth} from '../Store/AuthContext';
 import {Link} from "react-router-dom";
 import styles from './Profile.module.css';
 import {MdEdit, MdSave} from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 export default function Profile() {
 
@@ -79,14 +80,28 @@ export default function Profile() {
                         name: response.data.user.name
                     }
                 })
+
+                toast.success(`User profile updated successfully.`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
             else{
                 console.log("unsuccessul while saving user.. ", response.data.message);
+                toast.error(`Error while updating user profile.`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+                setIsEditingUsername(false);
+                setUserName(userData.name);
             }
 
         }
         catch(error){
             console.log("error saving username", error);
+            toast.error(`There was a problem while updating user profile.`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+            setIsEditingUsername(false);
+            setUserName(userData.name);
         }
     }
 
