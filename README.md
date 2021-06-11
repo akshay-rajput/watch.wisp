@@ -1,9 +1,8 @@
 
 <!-- PROJECT LOGO -->
-<br />
 <p align="center">
   <a href="https://github.com/akshay-rajput/watch.wisp/">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="./wisplogo.svg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Wisp</h3>
@@ -46,7 +45,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![App screenshot](./Wisp-Homepage.png)
 
 A video library app which has curated youtube videos related to vocabulary and English pronunciation. A user can view videos, signup, create & manage playlists. 
 This app uses UseContext + UseReducer for state management. Implemented features include dynamic routing, searching a video, save videos, user management, managing playlists, JWT authentication etc. 
@@ -56,6 +55,7 @@ This app uses UseContext + UseReducer for state management. Implemented features
 * [Reactjs](https://reactjs.org/docs/getting-started.html)
 * [react-router](https://reactrouter.com/)
 * [Mint Css](https://mintui.netlify.app/)
+
 You can view all open source resources & libraries used in this project on this [acknowledgements](https://watch-wisp.netlify.app/acknowledgements) page.
 
 <!-- GETTING STARTED -->
