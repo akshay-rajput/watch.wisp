@@ -1,6 +1,7 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styles from './Login.module.css';
 import {MdVisibility, MdVisibilityOff} from 'react-icons/md';
+import {ImSpinner8} from 'react-icons/im';
 import {Link, useNavigate} from 'react-router-dom';
 
 import axios from 'axios';
@@ -24,25 +25,69 @@ export default function Login() {
         errorMessage: null
     }
     const [loginData, setLoginData] = useState(initialState);
-
     const [showPassword, setShowPassword] = useState(false);
+
+    const [processingLoginAsGuest, setProcessingLoginAsGuest] = useState(false);
+
     const password = useRef(null);
 
     let navigate = useNavigate();
 
-    async function doLogin(event){
+    // if already logged in, navigate away
+    useEffect(() => {
+        if(authState.token){
+            console.log("already logged in..");
+            navigate('/');
+        }
+    }, [authState.token]);
+
+    // usual login
+    function loginUser(event){
         event.preventDefault();
-        // console.log('login: ', loginData);
+
         // loading
         setLoginData({
             ...loginData,
             isSubmitting: true,
             errorMessage: null
-        })
+        }) 
+
+        let loginAsGuest = false;
+        doLogin(loginAsGuest);
+    }
+
+    // login as guest
+    function loginGuestUser(){
+        // loading
+        let loginGuestData = {
+            email:"test@test.com",
+            password:"tester3",
+            isSubmitting: true,
+            errorMessage: null
+        }
+
+        setProcessingLoginAsGuest(true);
+
+        let loginAsGuest = true;
+        doLogin(loginAsGuest, loginGuestData);
+    }
+
+    // common function for login
+    async function doLogin(loginAsGuest, loginGuestData){
 
         // make a request and dispatch
         try{
-            const response = await axios.post("https://watch-wisp.herokuapp.com/login", loginData);
+            let loginFormData = {}
+            if(loginAsGuest){
+                loginFormData = loginGuestData
+            }
+            else{
+                loginFormData = {...loginData}
+            }
+
+            // console.log('loginFormData: ', loginFormData);
+
+            const response = await axios.post("https://watch-wisp.herokuapp.com/login", loginFormData);
             // const response = await axios.post("http://localhost:4000/login", loginData);
 
             console.log('login response: ', response);
@@ -66,23 +111,20 @@ export default function Login() {
                 setToken(userData.token);
                 setUserAvatar(userData.avatarUrl);
 
-                // finish loading
-                setLoginData({
-                    ...loginData,
-                    isSubmitting: false,
-                    errorMessage: null
-                })
+                // reset form
+                resetFormState(loginAsGuest);
+
+                toast.info(`Welcome back, ${response.data.user.name}!`, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
 
                 navigate('/');
             }
             else{
                 console.log('response unsuccessful: ', response.message);
-                // finish loading
-                setLoginData({
-                    ...loginData,
-                    isSubmitting: false,
-                    errorMessage: response.data.message
-                })
+                
+                // reset form
+                resetFormState(loginAsGuest);
                 
                 toast.error(`Error: ${response.data.message}`, {
                     position: toast.POSITION.BOTTOM_RIGHT
@@ -94,17 +136,26 @@ export default function Login() {
             console.log('Error login: ', error.response.data.message);
 
             // finish loading
-            setLoginData({
-                ...loginData,
-                isSubmitting: false,
-                errorMessage: error.response.data.message
-            })
+            resetFormState(loginAsGuest);
 
             toast.error(`Error: ${error.response.data.message}`, {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
         }
+    }
 
+    function resetFormState(loginAsGuest){
+        // console.log('while reset: ', loginAsGuest);
+        if(loginAsGuest){
+            setProcessingLoginAsGuest(false);
+        }
+        else{
+            // finish loading
+            setLoginData({
+                ...loginData,
+                isSubmitting: false,
+            })
+        }
     }
 
     function handleInputChange(event){
@@ -115,11 +166,11 @@ export default function Login() {
     }
 
     return (
-        <div className={styles.login_form + " border borderGray2"}>
+        <div className={styles.login_form + " border borderGray2 mb12"}>
             <h3 className={styles.login_heading}>Login</h3>
             <small className="pl4 pr4 mb12 displayBlock textGray4">Sign-in with your account to use all features</small>
             
-            <form onSubmit={doLogin}>
+            <form onSubmit={loginUser}>
                 <div className={"displayFlex flexCol pl4 pr4 mb4"}>
                     <label htmlFor="user_email" className="textSm textGray4 mb1">Email</label>
                     <input type="email" id="user_email" name="email" value={loginData.email} onChange={handleInputChange}
@@ -141,8 +192,27 @@ export default function Login() {
                 </div>
 
                 <div className="p4 mt8">
-                    <button className="displayBlock wFull p3 textRg bgBlue4 textWhite borderNone rounded" disabled={loginData.isSubmitting}>
-                        { loginData.isSubmitting? 'Please wait..':'Login'}
+                    <button type="submit" className="displayBlock wFull p3 textRg bgBlue4 hover:bgBlue5 textWhite border borderBlue4 rounded" disabled={loginData.isSubmitting}>
+                        { 
+                            loginData.isSubmitting ? 
+                            <span>
+                                <ImSpinner8 className="loadingIcon mr1"/> Please wait
+                            </span>
+                            :
+                            'Login'
+                        }
+                    </button>
+                    
+                    <span className="displayBlock mt4 mb4 textCenter textGray4 fontBold">OR</span>
+
+                    <button type="button" onClick={loginGuestUser} className="displayBlock wFull p3 textRg bgBlue1 border borderBlue5 textBlue5 hover:bgBlue6 hover:textWhite rounded" disabled={processingLoginAsGuest}>
+                        { 
+                            processingLoginAsGuest ? 
+                            <span>
+                                <ImSpinner8 className="loadingIcon mr1"/> Please wait
+                            </span>
+                            :
+                            'Login as Guest'}
                     </button>
 
                     <p className="mt8 textCenter textGray4">
