@@ -1,0 +1,27 @@
+.user_options_bottom_drawer{
+    /* background: var(--dark); */
+    z-index: 2;
+    background: #333;
+    color: var(--light);
+    padding: 0.5rem;
+    border-radius: 0 0 4px 4px;
+    position: absolute;
+    width: 10rem;
+    top: 4rem;
+    right: 0;
+}
+
+.user_options{
+    color: var(--light) !important;
+    justify-content: flex-end;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-family: 'Signika', sans-serif;
+    font-weight: normal;
+    font-size: 1.15rem;
+}
+.user_options:hover{
+    color: var(--primary) !important;
+    text-decoration: none;
+}

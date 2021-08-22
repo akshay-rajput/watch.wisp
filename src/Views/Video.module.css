@@ -1,0 +1,18 @@
+.video_container{
+    grid-column-start: span 12;
+    margin-bottom: 2rem;
+}
+.video_others{
+    grid-column-start: span 12;
+}
+
+/* desktop */
+@media (min-width: 992px) {
+    .video_container{
+        grid-column-start: span 8;
+        margin-bottom: 2rem;
+    }
+    .video_others{
+        grid-column-start: span 4;
+    }   
+}

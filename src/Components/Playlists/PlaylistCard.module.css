@@ -1,0 +1,38 @@
+.playlist_card{
+    border-radius: 4px;
+    background-color: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+}
+
+.playlist_card_image{
+    border-radius: 4px 4px 0 0;
+}
+
+.playlist_card_title{
+    color: var(--dark);
+}
+.playlist_card_title:hover{
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+.playlist_card_actions{
+    justify-content: flex-start;
+}
+.playlist_card_button{
+    background-color: transparent;
+    border-radius: 4px;
+    color: var(--primary-dark);
+    border:none;
+    padding: 0.25rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+.playlist_card_button:hover{
+    background-color: var(--secondary);
+}
+
+.playlist_card_viewlink{
+    width: max-content;
+}

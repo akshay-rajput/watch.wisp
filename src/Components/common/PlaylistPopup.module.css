@@ -1,0 +1,60 @@
+.modal{
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    z-index: 3;   
+}
+
+.modal_backdrop{
+    background: rgba(0,0,0,0.85);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    z-index: 1;        
+}
+.modal_dialog{
+    background: white;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    margin: 100px auto;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+.btn_close{
+    /* width: 30px;
+    height: 30px; */
+    border-radius: 50%;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background-color: var(--secondary);
+    padding: 2px;
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+}
+
+.list_of_playlists{
+    position: relative;
+}
+.playlist_updating{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 4px;
+    text-align: center;
+}

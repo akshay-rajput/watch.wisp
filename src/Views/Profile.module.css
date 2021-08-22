@@ -1,0 +1,23 @@
+.form_grid{
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(12, 1fr);
+    background-color: var(--gray-light);
+    border-radius: 4px;
+}
+.form_label{
+    grid-column-start: span 12;
+    font-size: 1.15rem;
+}
+.form_input{
+    grid-column-start: span 12;
+}
+@media (min-width: 768px) {
+    .form_label{
+        grid-column-start: span 4;
+        font-size: 1.15rem;
+    }
+    .form_input{
+        grid-column-start: span 8;
+    }
+}

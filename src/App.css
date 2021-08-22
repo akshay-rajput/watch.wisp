@@ -1,42 +1,89 @@
-.App {
-  text-align: center;
+:root{
+    --primary: #1e90ff;
+    --primary-dark: #5865F2;
+    --secondary: #c2e0ff;
+    --light: #ebf5ff;
+    --gray: #6f8296;
+    --gray-light: #fcfcfc;
+    --gray-mid: #dcdcdc;
+    --dark: #172933;
+    
+}
+.App{
+    min-height: 100vh;
+    font-family: 'Roboto', "Oxygen", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1, h2, h3, h4, h5, .logofont{
+    font-weight: 600;
+    font-family: 'Signika', sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a{
+    color: var(--primary-dark);
+    transition: color ease 0.35s;
+}
+a:hover{
+    color: var(--dark);
+    text-decoration: underline;
+}
+a.link-button:hover{
+    text-decoration: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+input:focus, textarea:focus, select:focus{
+    outline-color: var(--primary);
 }
 
-.App-link {
-  color: #61dafb;
+/* feature navbar activelink */
+.active_link{
+    color: var(--light);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* main layout */
+.app-main{
+    display: flex;
+    flex-direction: column-reverse;
+}
+.app-content{
+    padding-top: 1rem;
+    padding-bottom: 3rem;
 }
 
-button {
-  font-size: calc(10px + 2vmin);
+.loadingIcon{
+    animation: rotating 2s linear infinite;
 }
+@keyframes rotating {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+/* mobile only */
+@media (max-width: 480px) {
+    .Toastify__toast-container {
+        width: 90%;
+    }
+    .Toastify__toast-container--bottom-right {
+        bottom: 4rem;
+        right: 1rem;
+    }
+}
+
+/* tablet and up */
+@media (min-width: 768px) {
+    .app-main{
+        flex-direction: row;
+    }
+    .app-content{
+        margin-left: 6rem;
+        padding-top: 5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        width: calc(100% - 6rem);
+    }
+}
+
